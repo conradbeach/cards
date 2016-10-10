@@ -11,11 +11,13 @@ html
   
     main
       block content
+      
+    aside
   
     +javascript_include_tag('vendor/bower')
     +javascript_include_tag('vendor/backbone.localStorage')
     +javascript_include_tag('handlebars_templates')
     +javascript_include_tag('app')
-    +javascript_include_tag('models/card', 'collections/cards', 'views/simple_card.js')
+    +javascript_include_tag('models/card', 'collections/cards', 'views/simple_card', 'views/card')
     +javascript_include_tag('models/list', 'collections/lists', 'views/list')
     +javascript_include_tag('views/lists')

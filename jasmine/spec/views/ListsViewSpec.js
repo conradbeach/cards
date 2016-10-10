@@ -1,9 +1,8 @@
 describe('ListsView', function() {
   beforeEach(function() {
     loadFixtures('body.html');
-
     this.seed();
-
+    
     this.view = new ListsView({ el: 'main' });
   });
 
