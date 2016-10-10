@@ -7,7 +7,9 @@ html
     +stylesheet_link_tag('application')
   body
     header
+      p Search
       input#search
+      ul
   
     main
       block content
@@ -21,3 +23,4 @@ html
     +javascript_include_tag('models/card', 'collections/cards', 'views/simple_card', 'views/card')
     +javascript_include_tag('models/list', 'collections/lists', 'views/list')
     +javascript_include_tag('views/lists')
+    +javascript_include_tag('views/search')
