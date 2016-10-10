@@ -1,0 +1,43 @@
+@import 'whitespace-reset.css';
+body {
+  color: #444;
+  font-family: 'Lato', sans-serif;
+}
+main {
+  background: ;
+  clear: both;
+  margin: 0 auto;
+  padding: 25px 40px;
+  width: 800px;
+}
+h1 {
+  font-size: 2em;
+  padding-bottom: 25px;
+}
+#index ul {
+  margin-left: -20px;
+  padding-bottom: 40px;
+}
+#index ul li {
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 0 0 25px 20px;
+  vertical-align: top;
+  width: 25%;
+}
+#index ul li img {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+}
+#index ul li h2,
+#index ul li h3,
+#index ul li p {
+  padding-bottom: 5px;
+}
+#index ul li h2 {
+  font-size: 1.5em;
+}
+#index ul li h3 {
+  font-size: 1.25em;
+}
