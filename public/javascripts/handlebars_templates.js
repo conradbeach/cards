@@ -25,7 +25,7 @@ this["JST"]["list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":func
 },"useData":true});
 
 this["JST"]["new_list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<section id=\"new\"><a href=\"#\">Add a list...</a></section>";
+    return "<section><a href=\"#\" id=\"addList\">Add a list...</a><input id=\"addListInput\" class=\"hidden\"></section>";
 },"useData":true});
 
 this["JST"]["search_result"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {

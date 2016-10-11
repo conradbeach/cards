@@ -2,6 +2,12 @@ var ListsView = Backbone.View.extend({
   el: 'main',
   newListTemplate: app.templates.new_list,
 
+  events: {
+    'click #addList': 'showAddList',
+    'keypress #addListInput': 'createListOnEnter',
+    'blur #addListInput': 'closeAddList'
+  },
+
   initialize: function() {
     this.render();
   },
@@ -16,6 +22,28 @@ var ListsView = Backbone.View.extend({
     }, this);
 
     this.$el.append(this.newListTemplate());
+  },
+
+  showAddList: function(event) {
+    event.preventDefault();
+
+    this.$('#addList').addClass('hidden');
+    this.$('#addListInput').removeClass().focus();
+  },
+
+  closeAddList: function() {
+    this.$('#addList').removeClass('hidden');
+    this.$('#addListInput').val('').addClass('hidden');
+  },
+
+  createListOnEnter: function(event) {
+    var title;
+
+    if (event.which === ENTER_KEY) {
+      title = this.$('#addListInput').val().trim();
+      app.lists.create({ title: title });
+      this.render();
+    }
   }
 });
 
