@@ -19,10 +19,20 @@ describe('SimpleCardView', function () {
     expect(this.view.$('span')).toHaveClass('');
     expect(this.view.$('input')).toHaveClass('hidden');
 
-    this.view.showEdit(new Event(null));
+    this.view.showEditTitle(new Event(null));
 
     expect(this.view.$('span')).toHaveClass('hidden');
     expect(this.view.$('input')).toHaveClass('');
     expect(this.view.$('input').val()).toEqual('Card 1 of List 1');
+  });
+
+  it('closes and resets edit title input on blur', function() {
+    var $input = this.view.$('input');
+
+    this.view.showEditTitle(new Event(null));
+    $input.blur();
+
+    expect($input).toHaveClass('hidden');
+    expect($input.val()).toEqual('');
   });
 });

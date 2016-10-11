@@ -14,13 +14,25 @@ describe('ListView', function() {
   });
 
   it('shows the add card input', function() {
-    expect(this.view.$('#add')).toHaveClass('');
+    var $addCardInput = this.view.$('#add')
+
+    expect($addCardInput).toHaveClass('');
     expect(this.view.$('#addInput')).toHaveClass('hidden');
 
-    this.view.showAdd(new Event(null));
+    this.view.showAddCard(new Event(null));
 
-    expect(this.view.$('#add')).toHaveClass('hidden');
+    expect($addCardInput).toHaveClass('hidden');
     expect(this.view.$('#addInput')).toHaveClass('');
+  });
+
+  it('closes and resets add card input', function () {
+    var $addCardInput = this.view.$('#add');
+
+    this.view.showAddCard(new Event(null));
+    $addCardInput.blur();
+
+    expect($addCardInput).toHaveClass('hidden');
+    expect($addCardInput.val()).toEqual('');
   });
 
   it('creates a new card on enter', function() {
@@ -28,7 +40,7 @@ describe('ListView', function() {
 
     this.view.$('#addInput').val('New Card');
 
-    this.view.createOnEnter({ which: ENTER_KEY });
+    this.view.createCardOnEnter({ which: ENTER_KEY });
 
     expect(this.view.model.cards.length).toEqual(3);
     expect(this.view.model.cards.last().get('title')).toEqual('New Card');
@@ -38,10 +50,20 @@ describe('ListView', function() {
     expect(this.view.$('h1')).toHaveClass('');
     expect(this.view.$('#edit')).toHaveClass('hidden');
 
-    this.view.showEdit();
+    this.view.showEditTitle();
 
     expect(this.view.$('h1')).toHaveClass('hidden');
     expect(this.view.$('#edit')).toHaveClass('');
     expect(this.view.$('#edit').val()).toEqual('List 1');
+  });
+
+  it('closes and resets edit title input on blur', function () {
+    var $editInput = this.view.$('#edit');
+
+    this.view.showEditTitle();
+    $editInput.blur();
+
+    expect($editInput).toHaveClass('hidden');
+    expect($editInput.val()).toEqual('');
   });
 });

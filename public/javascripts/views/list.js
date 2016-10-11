@@ -4,10 +4,12 @@ var ListView = Backbone.View.extend({
   tagName: 'section',
 
   events: {
-    'click h1': 'showEdit',
-    'keypress #edit': 'saveOnEnter',
-    'click #add': 'showAdd',
-    'keypress #addInput': 'createOnEnter'
+    'click h1': 'showEditTitle',
+    'keypress #edit': 'saveTitleOnEnter',
+    'blur #edit': 'closeEditTitle',
+    'click #add': 'showAddCard',
+    'keypress #addInput': 'createCardOnEnter',
+    'blur #addInput': 'closeAddCard'
   },
 
   initialize: function() {
@@ -24,28 +26,38 @@ var ListView = Backbone.View.extend({
     }, this);
   },
 
-  showEdit: function() {
+  showEditTitle: function() {
     this.$('h1').addClass('hidden');
     this.$('#edit').removeClass()
                    .focus()
                    .val(this.model.get('title'));
   },
 
-  saveOnEnter: function(event) {
+  closeEditTitle: function() {
+    this.$('h1').removeClass();
+    this.$('#edit').val('').addClass('hidden');
+  },
+
+  saveTitleOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
       this.model.save({ title: this.$('#edit').val().trim() });
       this.render();
     }
   },
 
-  showAdd: function(event) {
+  showAddCard: function(event) {
     event.preventDefault();
 
     this.$('#add').addClass('hidden');
     this.$('#addInput').removeClass().focus();
   },
 
-  createOnEnter: function(event) {
+  closeAddCard: function() {
+    this.$('#add').removeClass();
+    this.$('#addInput').val('').addClass('hidden');
+  },
+
+  createCardOnEnter: function(event) {
     var title;
 
     if (event.which === ENTER_KEY) {
