@@ -7,6 +7,9 @@ var ListView = Backbone.View.extend({
     'click h1': 'showEditTitle',
     'keypress #editListTitle': 'saveTitleOnEnter',
     'blur #editListTitle': 'closeEditTitle',
+
+    'click #deleteList': 'deleteList',
+
     'click #addCard': 'showAddCard',
     'keypress #addCardInput': 'createCardOnEnter',
     'blur #addCardInput': 'closeAddCard'
@@ -66,6 +69,19 @@ var ListView = Backbone.View.extend({
       this.model.cards.create({ title: title });
 
       this.render();
+    }
+  },
+
+  deleteList: function(event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    // TODO: Add a confirmation pane for deleting.
+    var confirmed = confirm('Are you sure you want to delete this list?');
+
+    if (confirmed) {
+      this.model.destroy();
+      this.remove();
     }
   }
 });

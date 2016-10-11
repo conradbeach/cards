@@ -11,7 +11,11 @@ describe('ListView', function() {
   });
 
   it('renders the correct HTML', function() {
-    expect(this.view.$el.html()).toContain('<h1>List 1</h1><input class="hidden" id="editListTitle"><ul>');
+    var html = this.view.$el.html();
+
+    expect(html).toContain('<h1>List 1<a href="#" id="deleteList">Delete</a></h1>');
+    expect(html).toContain('<input class="hidden" id="editListTitle">');
+    expect(html).toContain('<ul>');
   });
 
   it('renders each card in its collection', function() {
