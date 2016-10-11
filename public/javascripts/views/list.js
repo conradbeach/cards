@@ -4,7 +4,9 @@ var ListView = Backbone.View.extend({
   tagName: 'section',
 
   events: {
-    'click #add': 'showAddInput',
+    'click h1': 'showEdit',
+    'keypress #edit': 'saveOnEnter',
+    'click #add': 'showAdd',
     'keypress #addInput': 'createOnEnter'
   },
 
@@ -18,17 +20,27 @@ var ListView = Backbone.View.extend({
     this.model.cards.each(function(card) {
       var cardView = new SimpleCardView({ model: card });
 
-      this.$('ul').prepend(cardView.$el);
+      this.$('ul').append(cardView.$el);
     }, this);
   },
 
-  add: function(event) {
-    event.preventDefault();
-
-    this.showAddInput();
+  showEdit: function() {
+    this.$('h1').addClass('hidden');
+    this.$('#edit').removeClass()
+                   .focus()
+                   .val(this.model.get('title'));
   },
 
-  showAddInput: function(event) {
+  saveOnEnter: function(event) {
+    if (event.which === ENTER_KEY) {
+      this.model.save({ title: this.$('#edit').val().trim() });
+      this.render();
+    }
+  },
+
+  showAdd: function(event) {
+    event.preventDefault();
+
     this.$('#add').addClass('hidden');
     this.$('#addInput').removeClass().focus();
   },

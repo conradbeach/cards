@@ -19,8 +19,13 @@ this["JST"]["card"] = Handlebars.template({"1":function(container,depth0,helpers
 this["JST"]["list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper;
 
-  return container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"title","hash":{},"data":data}) : helper)))
-    + "<a href=\"#\">Edit</a><ul></ul><a href=\"#\" id=\"add\">Add a card...</a><input class=\"hidden\" id=\"addInput\">";
+  return "<h1>"
+    + container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"title","hash":{},"data":data}) : helper)))
+    + "</h1><input class=\"hidden\" id=\"edit\"><ul></ul><a href=\"#\" id=\"add\">Add a card...</a><input class=\"hidden\" id=\"addInput\">";
+},"useData":true});
+
+this["JST"]["new_list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<section id=\"new\"><a href=\"#\">Add a list...</a></section>";
 },"useData":true});
 
 this["JST"]["search_result"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {

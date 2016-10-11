@@ -2,35 +2,46 @@ describe('ListView', function() {
   beforeEach(function() {
     this.seed();
 
-    view = new ListView({ model: app.lists.first() });
+    this.view = new ListView({ model: app.lists.first() });
   });
 
   it('renders the correct HTML', function() {
-    expect(view.$el.html()).toContain('List 1<a href="#">Edit</a><ul>');
+    expect(this.view.$el.html()).toContain('<h1>List 1</h1><input class="hidden" id="edit"><ul>');
   });
 
   it('renders each card in its collection', function() {
-    expect(view.$('ul li').length).toEqual(view.model.cards.length);
+    expect(this.view.$('ul li').length).toEqual(this.view.model.cards.length);
   });
 
   it('shows the add card input', function() {
-    expect(view.$('#add')).toHaveClass('');
-    expect(view.$('#addInput')).toHaveClass('hidden');
+    expect(this.view.$('#add')).toHaveClass('');
+    expect(this.view.$('#addInput')).toHaveClass('hidden');
 
-    view.showAddInput();
+    this.view.showAdd(new Event(null));
 
-    expect(view.$('#add')).toHaveClass('hidden');
-    expect(view.$('#addInput')).toHaveClass('');
+    expect(this.view.$('#add')).toHaveClass('hidden');
+    expect(this.view.$('#addInput')).toHaveClass('');
   });
 
   it('creates a new card on enter', function() {
-    expect(view.model.cards.length).toEqual(2);
+    expect(this.view.model.cards.length).toEqual(2);
 
-    view.$('#addInput').val('New Card');
+    this.view.$('#addInput').val('New Card');
 
-    view.createOnEnter({ which: ENTER_KEY });
+    this.view.createOnEnter({ which: ENTER_KEY });
 
-    expect(view.model.cards.length).toEqual(3);
-    expect(view.model.cards.last().get('title')).toEqual('New Card');
+    expect(this.view.model.cards.length).toEqual(3);
+    expect(this.view.model.cards.last().get('title')).toEqual('New Card');
+  });
+
+  it('shows the edit title input', function() {
+    expect(this.view.$('h1')).toHaveClass('');
+    expect(this.view.$('#edit')).toHaveClass('hidden');
+
+    this.view.showEdit();
+
+    expect(this.view.$('h1')).toHaveClass('hidden');
+    expect(this.view.$('#edit')).toHaveClass('');
+    expect(this.view.$('#edit').val()).toEqual('List 1');
   });
 });
