@@ -1,20 +1,18 @@
 describe('SearchView', function () {
-  xit('calls search() on input#search keypress', function (done) {
-    // FIXME: This test is failing.
-
+  beforeEach(function() {
     loadFixtures('body.html');
+    this.seed();
 
-    var view = new SearchView();
+    this.view = new SearchView({ el: 'header' });
+  });
 
-    spyOn(view, 'search');
+  it('displays the correct results from searching', function () {
+    this.view.$('#search').val('card');
+    this.view.$('#search').keyup();
+    expect(this.view.$('ul li').length).toEqual(4);
 
-    view.$('#search').trigger('keypress');
-
-    function test() {
-      expect(view.search).toHaveBeenCalled();
-      done();
-    }
-
-    test();
+    this.view.$('#search').val('card 2');
+    this.view.$('#search').keyup();
+    expect(this.view.$('ul li').length).toEqual(2);
   });
 });

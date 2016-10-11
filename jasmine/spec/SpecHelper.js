@@ -9,7 +9,7 @@ beforeEach(function() {
     list1.cards.create({ title: 'Card 1 of List 1',
                          description: 'Description of List 1 Card 1',
                          comments: ['This is a comment.', 'This is another comment.'] });
-    list1.cards.create({ title: 'Card 2 of List 2',
+    list1.cards.create({ title: 'Card 2 of List 1',
                         description: 'Description of List 1 Card 2',
                         comments: ['This is a comment.', 'This is another comment.'] });
 

@@ -1,13 +1,21 @@
 var SearchView = Backbone.View.extend({
   el: 'header',
+  resultTemplate: app.templates.search_result,
 
   events: {
-    'keypress #search': 'search'
+    'keyup #search': 'search'
   },
 
   search: function() {
-    // TODO: Search and append results to ul.
-    //       Create search result template.
+    var query = this.$('#search').val();
+    var matchingCards = app.search(query);
+    var $ul = this.$('ul');
+
+    $ul.html('');
+
+    matchingCards.forEach(function(card) {
+      $ul.append(this.resultTemplate(card.toJSON()));
+    }, this);
   }
 });
 
