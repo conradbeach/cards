@@ -5,11 +5,11 @@ var ListView = Backbone.View.extend({
 
   events: {
     'click h1': 'showEditTitle',
-    'keypress #edit': 'saveTitleOnEnter',
-    'blur #edit': 'closeEditTitle',
-    'click #add': 'showAddCard',
-    'keypress #addInput': 'createCardOnEnter',
-    'blur #addInput': 'closeAddCard'
+    'keypress #editListTitle': 'saveTitleOnEnter',
+    'blur #editListTitle': 'closeEditTitle',
+    'click #addCard': 'showAddCard',
+    'keypress #addCardInput': 'createCardOnEnter',
+    'blur #addCardInput': 'closeAddCard'
   },
 
   initialize: function() {
@@ -28,19 +28,19 @@ var ListView = Backbone.View.extend({
 
   showEditTitle: function() {
     this.$('h1').addClass('hidden');
-    this.$('#edit').removeClass()
+    this.$('#editListTitle').removeClass()
                    .focus()
                    .val(this.model.get('title'));
   },
 
   closeEditTitle: function() {
     this.$('h1').removeClass();
-    this.$('#edit').val('').addClass('hidden');
+    this.$('#editListTitle').val('').addClass('hidden');
   },
 
   saveTitleOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('#edit').val().trim() });
+      this.model.save({ title: this.$('#editListTitle').val().trim() });
       this.render();
     }
   },
@@ -48,20 +48,20 @@ var ListView = Backbone.View.extend({
   showAddCard: function(event) {
     event.preventDefault();
 
-    this.$('#add').addClass('hidden');
-    this.$('#addInput').removeClass().focus();
+    this.$('#addCard').addClass('hidden');
+    this.$('#addCardInput').removeClass().focus();
   },
 
   closeAddCard: function() {
-    this.$('#add').removeClass();
-    this.$('#addInput').val('').addClass('hidden');
+    this.$('#addCard').removeClass();
+    this.$('#addCardInput').val('').addClass('hidden');
   },
 
   createCardOnEnter: function(event) {
     var title;
 
     if (event.which === ENTER_KEY) {
-      title = this.$('#addInput').val().trim();
+      title = this.$('#addCardInput').val().trim();
 
       this.model.cards.create({ title: title });
 

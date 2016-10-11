@@ -3,10 +3,15 @@ describe('ListView', function() {
     this.seed();
 
     this.view = new ListView({ model: app.lists.first() });
+
+    this.$h1 = this.view.$('h1');
+    this.$editListTitle = this.view.$('#editListTitle');
+    this.$addCard = this.view.$('#addCard');
+    this.$addCardInput = this.view.$('#addCardInput');
   });
 
   it('renders the correct HTML', function() {
-    expect(this.view.$el.html()).toContain('<h1>List 1</h1><input class="hidden" id="edit"><ul>');
+    expect(this.view.$el.html()).toContain('<h1>List 1</h1><input class="hidden" id="editListTitle"><ul>');
   });
 
   it('renders each card in its collection', function() {
@@ -14,31 +19,28 @@ describe('ListView', function() {
   });
 
   it('shows the add card input', function() {
-    var $addCardInput = this.view.$('#add')
-
-    expect($addCardInput).toHaveClass('');
-    expect(this.view.$('#addInput')).toHaveClass('hidden');
+    expect(this.$addCard).toHaveClass('');
+    expect(this.$addCardInput).toHaveClass('hidden');
 
     this.view.showAddCard(new Event(null));
 
-    expect($addCardInput).toHaveClass('hidden');
-    expect(this.view.$('#addInput')).toHaveClass('');
+    expect(this.$addCard).toHaveClass('hidden');
+    expect(this.$addCardInput).toHaveClass('');
   });
 
   it('closes and resets add card input', function () {
-    var $addCardInput = this.view.$('#add');
-
     this.view.showAddCard(new Event(null));
-    $addCardInput.blur();
+    this.$addCardInput.val('Card');
+    this.$addCardInput.blur();
 
-    expect($addCardInput).toHaveClass('hidden');
-    expect($addCardInput.val()).toEqual('');
+    expect(this.$addCardInput).toHaveClass('hidden');
+    expect(this.$addCardInput.val()).toEqual('');
   });
 
   it('creates a new card on enter', function() {
     expect(this.view.model.cards.length).toEqual(2);
 
-    this.view.$('#addInput').val('New Card');
+    this.$addCardInput.val('New Card');
 
     this.view.createCardOnEnter({ which: ENTER_KEY });
 
@@ -47,23 +49,21 @@ describe('ListView', function() {
   });
 
   it('shows the edit title input', function() {
-    expect(this.view.$('h1')).toHaveClass('');
-    expect(this.view.$('#edit')).toHaveClass('hidden');
+    expect(this.$h1).toHaveClass('');
+    expect(this.$editListTitle).toHaveClass('hidden');
 
     this.view.showEditTitle();
 
-    expect(this.view.$('h1')).toHaveClass('hidden');
-    expect(this.view.$('#edit')).toHaveClass('');
-    expect(this.view.$('#edit').val()).toEqual('List 1');
+    expect(this.$h1).toHaveClass('hidden');
+    expect(this.$editListTitle).toHaveClass('');
+    expect(this.$editListTitle.val()).toEqual('List 1');
   });
 
   it('closes and resets edit title input on blur', function () {
-    var $editInput = this.view.$('#edit');
-
     this.view.showEditTitle();
-    $editInput.blur();
+    this.$editListTitle.blur();
 
-    expect($editInput).toHaveClass('hidden');
-    expect($editInput.val()).toEqual('');
+    expect(this.$editListTitle).toHaveClass('hidden');
+    expect(this.$editListTitle.val()).toEqual('');
   });
 });

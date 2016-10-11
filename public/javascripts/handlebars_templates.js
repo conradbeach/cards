@@ -21,7 +21,7 @@ this["JST"]["list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":func
 
   return "<h1>"
     + container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"title","hash":{},"data":data}) : helper)))
-    + "</h1><input class=\"hidden\" id=\"edit\"><ul></ul><a href=\"#\" id=\"add\">Add a card...</a><input class=\"hidden\" id=\"addInput\">";
+    + "</h1><input class=\"hidden\" id=\"editListTitle\"><ul></ul><a href=\"#\" id=\"addCard\">Add a card...</a><input class=\"hidden\" id=\"addCardInput\">";
 },"useData":true});
 
 this["JST"]["new_list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
