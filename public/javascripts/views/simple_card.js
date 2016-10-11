@@ -5,7 +5,7 @@ var SimpleCardView = Backbone.View.extend({
 
   events: {
     'click': 'viewCard',
-    'click a': 'edit',
+    'click a': 'showEdit',
     'keypress input': 'saveOnEnter'
   },
 
@@ -21,17 +21,14 @@ var SimpleCardView = Backbone.View.extend({
     app.trigger('viewCard', this.model);
   },
 
-  showEdit: function() {
-    this.$('span').addClass('hidden');
-    this.$('input').removeClass().focus();
-  },
-
-  edit: function(event) {
+  showEdit: function(event) {
     event.preventDefault();
     event.stopImmediatePropagation();
 
-    this.showEdit();
-    this.$('input').val(this.model.get('title'));
+    this.$('span').addClass('hidden');
+    this.$('input').removeClass()
+                   .focus()
+                   .val(this.model.get('title'));
   },
 
   saveOnEnter: function(event) {

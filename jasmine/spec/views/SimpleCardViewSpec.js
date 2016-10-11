@@ -7,14 +7,22 @@ describe('SimpleCardView', function () {
     expect(this.view.$el.html()).toContain('Card 1 of List 1<a href="#">Edit</a>');
   });
 
-  it('triggers app.viewCard when anchor is clicked', function() {
-    var cardModel = new Card();
-    var view = new SimpleCardView({ model: cardModel });
-
+  it('triggers app.viewCard when view is clicked', function() {
     spyOn(app, 'trigger');
 
-    view.$('a').click();
+    this.view.$el.click();
 
-    expect(app.trigger).toHaveBeenCalledWith('viewCard', view.model);
+    expect(app.trigger).toHaveBeenCalledWith('viewCard', app.lists.first().cards.first());
+  });
+
+  it('shows the edit title input', function () {
+    expect(this.view.$('span')).toHaveClass('');
+    expect(this.view.$('input')).toHaveClass('hidden');
+
+    this.view.showEdit(new Event(null));
+
+    expect(this.view.$('span')).toHaveClass('hidden');
+    expect(this.view.$('input')).toHaveClass('');
+    expect(this.view.$('input').val()).toEqual('Card 1 of List 1');
   });
 });
