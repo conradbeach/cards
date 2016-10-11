@@ -1,3 +1,5 @@
+var ENTER_KEY = 13;
+
 var app = {
   templates: JST,
 

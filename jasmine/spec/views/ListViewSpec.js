@@ -10,6 +10,27 @@ describe('ListView', function() {
   });
 
   it('renders each card in its collection', function() {
-    expect(view.$('ul li').length).toEqual(2);
+    expect(view.$('ul li').length).toEqual(view.model.cards.length);
+  });
+
+  it('shows the add card input', function() {
+    expect(view.$('#add')).toHaveClass('');
+    expect(view.$('#addInput')).toHaveClass('hidden');
+
+    view.showAddInput();
+
+    expect(view.$('#add')).toHaveClass('hidden');
+    expect(view.$('#addInput')).toHaveClass('');
+  });
+
+  it('creates a new card on enter', function() {
+    expect(view.model.cards.length).toEqual(2);
+
+    view.$('#addInput').val('New Card');
+
+    view.createOnEnter({ which: ENTER_KEY });
+
+    expect(view.model.cards.length).toEqual(3);
+    expect(view.model.cards.last().get('title')).toEqual('New Card');
   });
 });
