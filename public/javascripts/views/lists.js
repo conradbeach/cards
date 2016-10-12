@@ -9,6 +9,8 @@ var ListsView = Backbone.View.extend({
   },
 
   initialize: function() {
+    this.listenTo(app.lists, 'add remove', this.render);
+
     this.render();
   },
 
@@ -42,7 +44,6 @@ var ListsView = Backbone.View.extend({
     if (event.which === ENTER_KEY) {
       title = this.$('.addListInput').val().trim();
       app.lists.create({ title: title });
-      this.render();
     }
   }
 });

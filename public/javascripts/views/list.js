@@ -16,6 +16,9 @@ var ListView = Backbone.View.extend({
   },
 
   initialize: function() {
+    this.listenTo(this.model, 'change', this.render());
+    this.listenTo(this.model, 'destroy', this.remove());
+
     this.render();
   },
 
@@ -44,7 +47,6 @@ var ListView = Backbone.View.extend({
   saveTitleOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
       this.model.save({ title: this.$('.editListTitle').val().trim() });
-      this.render();
     }
   },
 
@@ -67,8 +69,6 @@ var ListView = Backbone.View.extend({
       title = this.$('.addCardInput').val().trim();
 
       this.model.cards.create({ title: title });
-
-      this.render();
     }
   },
 
@@ -80,8 +80,8 @@ var ListView = Backbone.View.extend({
     var confirmed = confirm('Are you sure you want to delete this list?');
 
     if (confirmed) {
+      this.model.cards.destroyAll();
       this.model.destroy();
-      this.remove();
     }
   }
 });
