@@ -4,6 +4,8 @@ var List = Backbone.Model.extend({
   },
 
   initialize: function() {
+    this.save();
+    
     this.cards = new Cards(this.id);
     this.cards.fetch();
   }
