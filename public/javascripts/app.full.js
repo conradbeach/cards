@@ -18555,3 +18555,406 @@ Backbone.sync = function(method, model, options) {
 
 return Backbone.LocalStorage;
 }));
+
+this["JST"] = this["JST"] || {};
+
+this["JST"]["card"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    return "<li>"
+    + container.escapeExpression(container.lambda(depth0, depth0))
+    + "</li>";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "<h1>"
+    + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
+    + "</h1><input id=\"editCardTitle\" class=\"hidden\"><p>Description <a href=\"#\" id=\"editDescription\">Edit</a></p><p id=\"description\">"
+    + alias4(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"description","hash":{},"data":data}) : helper)))
+    + "</p><input id=\"editDescriptionInput\" class=\"hidden\"><label for=\"comment\">Add a Comment</label><input id=\"addComment\" name=\"comment\" placeholder=\"Write a comment...\"><ul>"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.comments : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "</ul><p></p>";
+},"useData":true});
+
+this["JST"]["list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper;
+
+  return "<h1>"
+    + container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"title","hash":{},"data":data}) : helper)))
+    + "<a href=\"#\" id=\"deleteList\">Delete</a></h1><input class=\"hidden\" id=\"editListTitle\"><ul></ul><a href=\"#\" id=\"addCard\">Add a card...</a><input class=\"hidden\" id=\"addCardInput\">";
+},"useData":true});
+
+this["JST"]["new_list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<section><a href=\"#\" id=\"addList\">Add a list...</a><input id=\"addListInput\" class=\"hidden\"></section>";
+},"useData":true});
+
+this["JST"]["search_result"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "<li><a href=\""
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\">"
+    + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
+    + "</a></li>";
+},"useData":true});
+
+this["JST"]["simple_card"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper;
+
+  return "<span>"
+    + container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"title","hash":{},"data":data}) : helper)))
+    + "<a href=\"#\">Edit</a></span><input class=\"hidden\">";
+},"useData":true});
+var ENTER_KEY = 13;
+
+var app = {
+  templates: JST,
+
+  viewCard: function(model) {
+    var view = new CardView({ model: model });
+
+    view.render();
+
+    // TODO: Make sure you remove this view after it's done being used.
+  },
+
+  eachCard: function(callback, context) {
+    if (!context) { context = this; }
+
+    this.lists.each(function(list) {
+      list.cards.each(function(card) {
+        callback.call(context, card);
+      });
+    });
+  },
+
+  search: function(query) {
+    if (query.trim() === '') { return []; }
+
+    var matchingCards = [];
+    var pattern = new RegExp(query.trim().toLowerCase(), 'i');
+
+    this.eachCard(function(card) {
+      var title = card.get('title');
+      var description = card.get('description');
+
+      if (title.match(pattern) || description.match(pattern)) {
+        matchingCards.push(card);
+      }
+    });
+
+    return matchingCards;
+  }
+};
+
+_.extend(app, Backbone.Events);
+
+app.on('viewCard', app.viewCard)
+
+var Card = Backbone.Model.extend({
+  defaults: {
+    title: '',
+    description: '',
+    comments: []
+  }
+});
+
+var List = Backbone.Model.extend({
+  defaults: {
+    title: ''
+  },
+
+  initialize: function() {
+    this.cards = new Cards(this.id);
+    this.cards.fetch();
+  }
+});
+
+var Cards = Backbone.Collection.extend({
+  model: Card,
+
+  initialize: function(listId) {
+    this.localStorage = new Backbone.LocalStorage('card-backbone-' + listId);
+  }
+});
+
+var Lists = Backbone.Collection.extend({
+  model: List,
+  localStorage: new Backbone.LocalStorage('lists-backbone'),
+
+  initialize: function() {
+    this.fetch();
+  }
+});
+
+app.lists = new Lists();
+
+var CardView = Backbone.View.extend({
+  el: 'aside',
+  template: app.templates.card,
+
+  events: {
+    'click h1': 'showEditTitle',
+    'blur #editCardTitle': 'closeEditTitle',
+    'keypress #editCardTitle': 'saveTitleOnEnter',
+
+    'click #editDescription': 'showEditDescription',
+    'blur #editDescriptionInput': 'closeEditDescription',
+    'keypress #editDescriptionInput': 'saveDescriptionOnEnter'
+  },
+
+  render: function() {
+    this.$el.html(this.template(this.model.toJSON()));
+  },
+
+  showEditTitle: function() {
+    this.$('h1').addClass('hidden');
+    this.$('#editCardTitle').removeClass()
+                            .val(this.model.get('title'))
+                            .focus();
+  },
+
+  closeEditTitle: function() {
+    this.$('h1').removeClass();
+    this.$('#editCardTitle').val('').addClass('hidden');
+  },
+
+  saveTitleOnEnter: function(event) {
+    if (event.which === ENTER_KEY) {
+      this.model.save({ title: this.$('#editCardTitle').val().trim() });
+      this.render();
+    }
+  },
+
+  showEditDescription: function(event) {
+    event.preventDefault();
+
+    this.$('#description').addClass('hidden');
+    this.$('#editDescriptionInput').removeClass()
+                                   .val(this.model.get('description'))
+                                   .focus();
+  },
+
+  closeEditDescription: function() {
+    this.$('#description').removeClass();
+    this.$('#editDescriptionInput').val('').addClass('hidden');
+  },
+
+  saveDescriptionOnEnter: function(event) {
+    var description;
+
+    if(event.which === ENTER_KEY) {
+      description = this.$('#editDescriptionInput').val().trim();
+
+      this.model. save({ description: description });
+      this.render();
+    }
+  }
+});
+
+var ListView = Backbone.View.extend({
+  model: List,
+  template: app.templates.list,
+  tagName: 'section',
+
+  events: {
+    'click h1': 'showEditTitle',
+    'keypress #editListTitle': 'saveTitleOnEnter',
+    'blur #editListTitle': 'closeEditTitle',
+
+    'click #deleteList': 'deleteList',
+
+    'click #addCard': 'showAddCard',
+    'keypress #addCardInput': 'createCardOnEnter',
+    'blur #addCardInput': 'closeAddCard'
+  },
+
+  initialize: function() {
+    this.render();
+  },
+
+  render: function() {
+    this.$el.html(this.template(this.model.toJSON()));
+
+    this.model.cards.each(function(card) {
+      var cardView = new SimpleCardView({ model: card });
+
+      this.$('ul').append(cardView.$el);
+    }, this);
+  },
+
+  showEditTitle: function() {
+    this.$('h1').addClass('hidden');
+    this.$('#editListTitle').removeClass()
+                   .focus()
+                   .val(this.model.get('title'));
+  },
+
+  closeEditTitle: function() {
+    this.$('h1').removeClass();
+    this.$('#editListTitle').val('').addClass('hidden');
+  },
+
+  saveTitleOnEnter: function(event) {
+    if (event.which === ENTER_KEY) {
+      this.model.save({ title: this.$('#editListTitle').val().trim() });
+      this.render();
+    }
+  },
+
+  showAddCard: function(event) {
+    event.preventDefault();
+
+    this.$('#addCard').addClass('hidden');
+    this.$('#addCardInput').removeClass().focus();
+  },
+
+  closeAddCard: function() {
+    this.$('#addCard').removeClass();
+    this.$('#addCardInput').val('').addClass('hidden');
+  },
+
+  createCardOnEnter: function(event) {
+    var title;
+
+    if (event.which === ENTER_KEY) {
+      title = this.$('#addCardInput').val().trim();
+
+      this.model.cards.create({ title: title });
+
+      this.render();
+    }
+  },
+
+  deleteList: function(event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    // TODO: Add a confirmation pane for deleting.
+    var confirmed = confirm('Are you sure you want to delete this list?');
+
+    if (confirmed) {
+      this.model.destroy();
+      this.remove();
+    }
+  }
+});
+
+var ListsView = Backbone.View.extend({
+  el: 'main',
+  newListTemplate: app.templates.new_list,
+
+  events: {
+    'click #addList': 'showAddList',
+    'keypress #addListInput': 'createListOnEnter',
+    'blur #addListInput': 'closeAddList'
+  },
+
+  initialize: function() {
+    this.render();
+  },
+
+  render: function() {
+    this.$el.html('');
+
+    app.lists.each(function(list) {
+      var listView = new ListView({ model: list });
+
+      this.$el.append(listView.$el);
+    }, this);
+
+    this.$el.append(this.newListTemplate());
+  },
+
+  showAddList: function(event) {
+    event.preventDefault();
+
+    this.$('#addList').addClass('hidden');
+    this.$('#addListInput').removeClass().focus();
+  },
+
+  closeAddList: function() {
+    this.$('#addList').removeClass('hidden');
+    this.$('#addListInput').val('').addClass('hidden');
+  },
+
+  createListOnEnter: function(event) {
+    var title;
+
+    if (event.which === ENTER_KEY) {
+      title = this.$('#addListInput').val().trim();
+      app.lists.create({ title: title });
+      this.render();
+    }
+  }
+});
+
+app.listsView = new ListsView();
+
+var SearchView = Backbone.View.extend({
+  el: 'header',
+  resultTemplate: app.templates.search_result,
+
+  events: {
+    'keyup #search': 'search'
+  },
+
+  search: function() {
+    var query = this.$('#search').val();
+    var matchingCards = app.search(query);
+    var $ul = this.$('ul');
+
+    $ul.html('');
+
+    matchingCards.forEach(function(card) {
+      $ul.append(this.resultTemplate(card.toJSON()));
+    }, this);
+  }
+});
+
+app.searchView = new SearchView();
+
+var SimpleCardView = Backbone.View.extend({
+  model: Card,
+  tagName: 'li',
+  template: app.templates.simple_card,
+
+  events: {
+    'click': 'viewCard',
+    'click a': 'showEditTitle',
+    'keypress input': 'saveTitleOnEnter',
+    'blur input': 'closeEditTitle'
+  },
+
+  initialize: function() {
+    this.render();
+  },
+
+  render: function() {
+    this.$el.html(this.template(this.model.toJSON()));
+  },
+
+  viewCard: function() {
+    app.trigger('viewCard', this.model);
+  },
+
+  showEditTitle: function(event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    this.$('span').addClass('hidden');
+    this.$('input').removeClass()
+                   .focus()
+                   .val(this.model.get('title'));
+  },
+
+  closeEditTitle: function() {
+    this.$('span').removeClass();
+    this.$('input').val('').addClass('hidden');
+  },
+
+  saveTitleOnEnter: function(event) {
+    if (event.which === ENTER_KEY) {
+      this.model.save({ title: this.$('input').val().trim() });
+      this.render();
+    }
+  }
+});

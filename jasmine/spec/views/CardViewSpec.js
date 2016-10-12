@@ -9,11 +9,13 @@ describe('CardView', function () {
 
     this.$h1 = this.view.$('h1');
     this.$editCardTitle = this.view.$('#editCardTitle');
+    this.$description = this.view.$('#description');
+    this.$editDescriptionInput = this.view.$('#editDescriptionInput');
   });
 
   it('renders the correct HTML', function () {
     expect(this.view.$el.html()).toContain('<h1>Card 1 of List 1</h1>');
-    expect(this.view.$el.html()).toContain('<p>Description of List 1 Card 1</p>');
+    expect(this.view.$el.html()).toContain('<p id="description">Description of List 1 Card 1</p>');
     expect(this.view.$el.html()).toContain('<li>This is a comment.</li>');
   });
 
@@ -34,5 +36,15 @@ describe('CardView', function () {
 
     expect(this.$editCardTitle).toHaveClass('hidden');
     expect(this.$editCardTitle.val()).toEqual('');
+  });
+
+  it('shows the edit description input', function() {
+    expect(this.$description).toHaveClass('');
+    expect(this.$editDescriptionInput).toHaveClass('hidden');
+
+    this.view.showEditTitle();
+
+    expect(this.$description).toHaveClass('hidden');
+    expect(this.$editDescriptionInput).toHaveClass('');
   });
 });

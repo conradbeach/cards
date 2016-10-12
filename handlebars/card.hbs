@@ -1,8 +1,17 @@
 <h1>{{title}}</h1>
 <input id="editCardTitle" class="hidden">
-<p>{{description}}</p>
+
+<p>Description <a href="#" id="editDescription">Edit</a></p>
+<p id="description">{{description}}</p>
+<input id="editDescriptionInput" class="hidden">
+
+<label for="comment">Add a Comment</label>
+<input id="addComment" name="comment" placeholder="Write a comment...">
+
 <ul>
   {{#each comments}}
     <li>{{this}}</li>
   {{/each}}
 </ul>
+
+<p></p>

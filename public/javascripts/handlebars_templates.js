@@ -9,11 +9,11 @@ this["JST"]["card"] = Handlebars.template({"1":function(container,depth0,helpers
 
   return "<h1>"
     + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
-    + "</h1><input id=\"editCardTitle\" class=\"hidden\"><p>Description <a href=\"#\" id=\"editDescription\">Edit</a></p><p>"
+    + "</h1><input id=\"editCardTitle\" class=\"hidden\"><p>Description <a href=\"#\" id=\"editDescription\">Edit</a></p><p id=\"description\">"
     + alias4(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"description","hash":{},"data":data}) : helper)))
     + "</p><input id=\"editDescriptionInput\" class=\"hidden\"><label for=\"comment\">Add a Comment</label><input id=\"addComment\" name=\"comment\" placeholder=\"Write a comment...\"><ul>"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.comments : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "</ul>";
+    + "</ul><p></p>";
 },"useData":true});
 
 this["JST"]["list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
