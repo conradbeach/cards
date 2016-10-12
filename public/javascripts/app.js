@@ -6,8 +6,6 @@ var app = {
   viewCard: function(model) {
     var view = new CardView({ model: model });
 
-    view.render();
-
     // TODO: Make sure you remove this view after it's done being used.
   },
 
@@ -42,4 +40,10 @@ var app = {
 
 _.extend(app, Backbone.Events);
 
-app.on('viewCard', app.viewCard)
+app.on('viewCard', app.viewCard);
+
+Handlebars.registerHelper('formatDate', function(date) {
+  var dateObj = new Date(date);
+
+  return dateObj.toString();
+});

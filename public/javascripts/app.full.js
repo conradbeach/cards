@@ -18559,19 +18559,25 @@ return Backbone.LocalStorage;
 this["JST"] = this["JST"] || {};
 
 this["JST"]["card"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    return "<li>"
-    + container.escapeExpression(container.lambda(depth0, depth0))
-    + "</li>";
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3=container.escapeExpression;
+
+  return "<li data-index=\""
+    + alias3(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : alias2),(typeof helper === "function" ? helper.call(alias1,{"name":"index","hash":{},"data":data}) : helper)))
+    + "\"><p class=\"comment\">"
+    + alias3(container.lambda((depth0 != null ? depth0.text : depth0), depth0))
+    + "</p><input class=\"editCommentInput hidden\"><p>on "
+    + alias3((helpers.formatDate || (depth0 && depth0.formatDate) || alias2).call(alias1,(depth0 != null ? depth0.date : depth0),{"name":"formatDate","hash":{},"data":data}))
+    + " <a href=\"#\" class=\"editComment\">Edit</a> <a href=\"#\" class=\"deleteComment\">Delete</a></p></li>";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<h1>"
     + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
-    + "</h1><input id=\"editCardTitle\" class=\"hidden\"><p>Description <a href=\"#\" id=\"editDescription\">Edit</a></p><p id=\"description\">"
+    + "</h1><input class=\"editCardTitle hidden\"><p>Description <a href=\"#\" class=\"editDescription\">Edit</a></p><p class=\"description\">"
     + alias4(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"description","hash":{},"data":data}) : helper)))
-    + "</p><input id=\"editDescriptionInput\" class=\"hidden\"><label for=\"comment\">Add a Comment</label><input id=\"addComment\" name=\"comment\" placeholder=\"Write a comment...\"><ul>"
+    + "</p><input class=\"editDescriptionInput hidden\"><label for=\"comment\">Add a Comment</label><input class=\"addComment\" name=\"comment\" placeholder=\"Write a comment...\"><ul>"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.comments : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "</ul><p></p>";
+    + "</ul>";
 },"useData":true});
 
 this["JST"]["list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -18579,11 +18585,11 @@ this["JST"]["list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":func
 
   return "<h1>"
     + container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"title","hash":{},"data":data}) : helper)))
-    + "<a href=\"#\" id=\"deleteList\">Delete</a></h1><input class=\"hidden\" id=\"editListTitle\"><ul></ul><a href=\"#\" id=\"addCard\">Add a card...</a><input class=\"hidden\" id=\"addCardInput\">";
+    + "<a href=\"#\" class=\"deleteList\">Delete</a></h1><input class=\"editListTitle hidden\"><ul></ul><a href=\"#\" class=\"addCard\">Add a card...</a><input class=\"addCardInput hidden\">";
 },"useData":true});
 
 this["JST"]["new_list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<section><a href=\"#\" id=\"addList\">Add a list...</a><input id=\"addListInput\" class=\"hidden\"></section>";
+    return "<section><a href=\"#\" class=\"addList\">Add a list...</a><input class=\"addListInput hidden\"></section>";
 },"useData":true});
 
 this["JST"]["search_result"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -18610,8 +18616,6 @@ var app = {
 
   viewCard: function(model) {
     var view = new CardView({ model: model });
-
-    view.render();
 
     // TODO: Make sure you remove this view after it's done being used.
   },
@@ -18647,7 +18651,13 @@ var app = {
 
 _.extend(app, Backbone.Events);
 
-app.on('viewCard', app.viewCard)
+app.on('viewCard', app.viewCard);
+
+Handlebars.registerHelper('formatDate', function(date) {
+  var dateObj = new Date(date);
+
+  return dateObj.toString();
+});
 
 var Card = Backbone.Model.extend({
   defaults: {
@@ -18663,6 +18673,8 @@ var List = Backbone.Model.extend({
   },
 
   initialize: function() {
+    this.save();
+    
     this.cards = new Cards(this.id);
     this.cards.fetch();
   }
@@ -18673,6 +18685,12 @@ var Cards = Backbone.Collection.extend({
 
   initialize: function(listId) {
     this.localStorage = new Backbone.LocalStorage('card-backbone-' + listId);
+  },
+
+  destroyAll: function() {
+    _.each(_.clone(this.models), function(card) {
+      card.destroy();
+    });
   }
 });
 
@@ -18693,12 +18711,26 @@ var CardView = Backbone.View.extend({
 
   events: {
     'click h1': 'showEditTitle',
-    'blur #editCardTitle': 'closeEditTitle',
-    'keypress #editCardTitle': 'saveTitleOnEnter',
+    'blur .editCardTitle': 'closeEditTitle',
+    'keypress .editCardTitle': 'saveTitleOnEnter',
 
-    'click #editDescription': 'showEditDescription',
-    'blur #editDescriptionInput': 'closeEditDescription',
-    'keypress #editDescriptionInput': 'saveDescriptionOnEnter'
+    'click .editDescription': 'showEditDescription',
+    'blur .editDescriptionInput': 'closeEditDescription',
+    'keypress .editDescriptionInput': 'saveDescriptionOnEnter',
+
+    'keypress .addComment': 'addCommentOnEnter',
+
+    'click .editComment': 'showEditComment',
+    'blur .editCommentInput': 'closeEditComment',
+    'keypress .editCommentInput': 'saveCommentOnEnter',
+
+    'click .deleteComment': 'deleteComment'
+  },
+
+  initialize: function() {
+    this.listenTo(this.model, 'change', this.render);
+
+    this.render();
   },
 
   render: function() {
@@ -18707,46 +18739,106 @@ var CardView = Backbone.View.extend({
 
   showEditTitle: function() {
     this.$('h1').addClass('hidden');
-    this.$('#editCardTitle').removeClass()
+    this.$('.editCardTitle').removeClass('hidden')
                             .val(this.model.get('title'))
                             .focus();
   },
 
   closeEditTitle: function() {
-    this.$('h1').removeClass();
-    this.$('#editCardTitle').val('').addClass('hidden');
+    this.$('h1').removeClass('hidden');
+    this.$('.editCardTitle').val('').addClass('hidden');
   },
 
   saveTitleOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('#editCardTitle').val().trim() });
-      this.render();
+      this.model.save({ title: this.$('.editCardTitle').val().trim() });
     }
   },
 
   showEditDescription: function(event) {
     event.preventDefault();
 
-    this.$('#description').addClass('hidden');
-    this.$('#editDescriptionInput').removeClass()
+    this.$('.description').addClass('hidden');
+    this.$('.editDescriptionInput').removeClass('hidden')
                                    .val(this.model.get('description'))
                                    .focus();
   },
 
   closeEditDescription: function() {
-    this.$('#description').removeClass();
-    this.$('#editDescriptionInput').val('').addClass('hidden');
+    this.$('.description').removeClass('hidden');
+    this.$('.editDescriptionInput').val('').addClass('hidden');
   },
 
   saveDescriptionOnEnter: function(event) {
     var description;
 
-    if(event.which === ENTER_KEY) {
-      description = this.$('#editDescriptionInput').val().trim();
+    if (event.which === ENTER_KEY) {
+      description = this.$('.editDescriptionInput').val().trim();
 
-      this.model. save({ description: description });
-      this.render();
+      this.model.save({ description: description });
     }
+  },
+
+  getCommentParent: function(event) {
+    return $(event.target).parents('li');
+  },
+
+  addCommentOnEnter: function(event) {
+    if (event.which === ENTER_KEY) {
+      var comments = this.model.get('comments');
+      var comment = { date: new Date(), text: this.$('.addComment').val().trim() };
+
+      comments.push(comment);
+
+      this.model.save({ comments: comments });
+    }
+  },
+
+  showEditComment: function(event) {
+    event.preventDefault();
+
+    var $parentLi = this.getCommentParent(event);
+    var index = $parentLi.data('index');
+
+    $parentLi.find('.comment').addClass('hidden');
+    $parentLi.find('.editCommentInput').removeClass('hidden')
+                          .val(this.model.get('comments')[index].text)
+                          .focus();
+  },
+
+  closeEditComment: function(event) {
+    var $parentLi = this.getCommentParent(event);
+
+    $parentLi.find('.comment').removeClass('hidden');
+    $parentLi.find('.editCommentInput').addClass('hidden').val('');
+  },
+
+  saveCommentOnEnter: function(event) {
+    if (event.which === ENTER_KEY) {
+      var $parentLi = this.getCommentParent(event);
+      var text = $parentLi.find('.editCommentInput').val();
+      var index = $parentLi.data('index');
+
+      var comments = this.model.get('comments');
+      var comment = comments[index];
+
+      comment.text = text;
+
+      this.model.save();
+      this.model.trigger('change');
+    }
+  },
+
+  deleteComment: function(event) {
+    event.preventDefault();
+
+    var index = this.getCommentParent(event).data('index');
+    var comments = this.model.get('comments');
+
+    comments.splice(index, 1);
+
+    this.model.save({ comments: comments });
+    this.model.trigger('change');
   }
 });
 
@@ -18757,17 +18849,20 @@ var ListView = Backbone.View.extend({
 
   events: {
     'click h1': 'showEditTitle',
-    'keypress #editListTitle': 'saveTitleOnEnter',
-    'blur #editListTitle': 'closeEditTitle',
+    'keypress .editListTitle': 'saveTitleOnEnter',
+    'blur .editListTitle': 'closeEditTitle',
 
-    'click #deleteList': 'deleteList',
+    'click .deleteList': 'deleteList',
 
-    'click #addCard': 'showAddCard',
-    'keypress #addCardInput': 'createCardOnEnter',
-    'blur #addCardInput': 'closeAddCard'
+    'click .addCard': 'showAddCard',
+    'keypress .addCardInput': 'createCardOnEnter',
+    'blur .addCardInput': 'closeAddCard'
   },
 
   initialize: function() {
+    this.listenTo(this.model, 'change', this.render());
+    this.listenTo(this.model, 'destroy', this.remove());
+
     this.render();
   },
 
@@ -18783,44 +18878,41 @@ var ListView = Backbone.View.extend({
 
   showEditTitle: function() {
     this.$('h1').addClass('hidden');
-    this.$('#editListTitle').removeClass()
+    this.$('.editListTitle').removeClass('hidden')
                    .focus()
                    .val(this.model.get('title'));
   },
 
   closeEditTitle: function() {
-    this.$('h1').removeClass();
-    this.$('#editListTitle').val('').addClass('hidden');
+    this.$('h1').removeClass('hidden');
+    this.$('.editListTitle').val('').addClass('hidden');
   },
 
   saveTitleOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('#editListTitle').val().trim() });
-      this.render();
+      this.model.save({ title: this.$('.editListTitle').val().trim() });
     }
   },
 
   showAddCard: function(event) {
     event.preventDefault();
 
-    this.$('#addCard').addClass('hidden');
-    this.$('#addCardInput').removeClass().focus();
+    this.$('.addCard').addClass('hidden');
+    this.$('.addCardInput').removeClass('hidden').focus();
   },
 
   closeAddCard: function() {
-    this.$('#addCard').removeClass();
-    this.$('#addCardInput').val('').addClass('hidden');
+    this.$('.addCard').removeClass('hidden');
+    this.$('.addCardInput').val('').addClass('hidden');
   },
 
   createCardOnEnter: function(event) {
     var title;
 
     if (event.which === ENTER_KEY) {
-      title = this.$('#addCardInput').val().trim();
+      title = this.$('.addCardInput').val().trim();
 
       this.model.cards.create({ title: title });
-
-      this.render();
     }
   },
 
@@ -18832,8 +18924,8 @@ var ListView = Backbone.View.extend({
     var confirmed = confirm('Are you sure you want to delete this list?');
 
     if (confirmed) {
+      this.model.cards.destroyAll();
       this.model.destroy();
-      this.remove();
     }
   }
 });
@@ -18843,12 +18935,14 @@ var ListsView = Backbone.View.extend({
   newListTemplate: app.templates.new_list,
 
   events: {
-    'click #addList': 'showAddList',
-    'keypress #addListInput': 'createListOnEnter',
-    'blur #addListInput': 'closeAddList'
+    'click .addList': 'showAddList',
+    'keypress .addListInput': 'createListOnEnter',
+    'blur .addListInput': 'closeAddList'
   },
 
   initialize: function() {
+    this.listenTo(app.lists, 'add remove', this.render);
+
     this.render();
   },
 
@@ -18867,22 +18961,21 @@ var ListsView = Backbone.View.extend({
   showAddList: function(event) {
     event.preventDefault();
 
-    this.$('#addList').addClass('hidden');
-    this.$('#addListInput').removeClass().focus();
+    this.$('.addList').addClass('hidden');
+    this.$('.addListInput').removeClass('hidden').focus();
   },
 
   closeAddList: function() {
-    this.$('#addList').removeClass('hidden');
-    this.$('#addListInput').val('').addClass('hidden');
+    this.$('.addList').removeClass('hidden');
+    this.$('.addListInput').val('').addClass('hidden');
   },
 
   createListOnEnter: function(event) {
     var title;
 
     if (event.which === ENTER_KEY) {
-      title = this.$('#addListInput').val().trim();
+      title = this.$('.addListInput').val().trim();
       app.lists.create({ title: title });
-      this.render();
     }
   }
 });
@@ -18925,6 +19018,8 @@ var SimpleCardView = Backbone.View.extend({
   },
 
   initialize: function() {
+    this.listenTo(this.model, 'change', this.render);
+
     this.render();
   },
 

@@ -10,10 +10,10 @@
 
 <ul>
   {{#each comments}}
-    <li attr-index: {{@index}}>
+    <li data-index="{{@index}}">
       <p class="comment">{{this.text}}</p>
-      <input class="#editCommentInput hidden">
-      <p>on {{formatDate this.date}} <a href="#" class="#editComment">Edit</a> <a href="#" class="#deleteComment">Delete</a></p>
+      <input class="editCommentInput hidden">
+      <p>on {{formatDate this.date}} <a href="#" class="editComment">Edit</a> <a href="#" class="deleteComment">Delete</a></p>
     </li>
   {{/each}}
 </ul>
