@@ -1,17 +1,19 @@
 <h1>{{title}}</h1>
-<input id="editCardTitle" class="hidden">
+<input class="editCardTitle hidden">
 
-<p>Description <a href="#" id="editDescription">Edit</a></p>
-<p id="description">{{description}}</p>
-<input id="editDescriptionInput" class="hidden">
+<p>Description <a href="#" class="editDescription">Edit</a></p>
+<p class="description">{{description}}</p>
+<input class="editDescriptionInput hidden">
 
 <label for="comment">Add a Comment</label>
-<input id="addComment" name="comment" placeholder="Write a comment...">
+<input class="addComment" name="comment" placeholder="Write a comment...">
 
 <ul>
   {{#each comments}}
-    <li>{{this}}</li>
+    <li attr-index: {{@index}}>
+      <p class="comment">{{this.text}}</p>
+      <input class="#editCommentInput hidden">
+      <p>on {{formatDate this.date}} <a href="#" class="#editComment">Edit</a> <a href="#" class="#deleteComment">Delete</a></p>
+    </li>
   {{/each}}
 </ul>
-
-<p></p>

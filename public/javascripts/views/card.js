@@ -4,12 +4,12 @@ var CardView = Backbone.View.extend({
 
   events: {
     'click h1': 'showEditTitle',
-    'blur #editCardTitle': 'closeEditTitle',
-    'keypress #editCardTitle': 'saveTitleOnEnter',
+    'blur .editCardTitle': 'closeEditTitle',
+    'keypress .editCardTitle': 'saveTitleOnEnter',
 
-    'click #editDescription': 'showEditDescription',
-    'blur #editDescriptionInput': 'closeEditDescription',
-    'keypress #editDescriptionInput': 'saveDescriptionOnEnter'
+    'click .editDescription': 'showEditDescription',
+    'blur .editDescriptionInput': 'closeEditDescription',
+    'keypress .editDescriptionInput': 'saveDescriptionOnEnter',
   },
 
   render: function() {
@@ -18,14 +18,14 @@ var CardView = Backbone.View.extend({
 
   showEditTitle: function() {
     this.$('h1').addClass('hidden');
-    this.$('#editCardTitle').removeClass()
+    this.$('.editCardTitle').removeClass('hidden')
                             .val(this.model.get('title'))
                             .focus();
   },
 
   closeEditTitle: function() {
-    this.$('h1').removeClass();
-    this.$('#editCardTitle').val('').addClass('hidden');
+    this.$('h1').removeClass('hidden');
+    this.$('.editCardTitle').val('').addClass('hidden');
   },
 
   saveTitleOnEnter: function(event) {
@@ -38,24 +38,24 @@ var CardView = Backbone.View.extend({
   showEditDescription: function(event) {
     event.preventDefault();
 
-    this.$('#description').addClass('hidden');
-    this.$('#editDescriptionInput').removeClass()
+    this.$('.description').addClass('hidden');
+    this.$('.editDescriptionInput').removeClass('hidden')
                                    .val(this.model.get('description'))
                                    .focus();
   },
 
   closeEditDescription: function() {
-    this.$('#description').removeClass();
-    this.$('#editDescriptionInput').val('').addClass('hidden');
+    this.$('.description').removeClass('hidden');
+    this.$('.editDescriptionInput').val('').addClass('hidden');
   },
 
   saveDescriptionOnEnter: function(event) {
     var description;
 
-    if(event.which === ENTER_KEY) {
-      description = this.$('#editDescriptionInput').val().trim();
+    if (event.which === ENTER_KEY) {
+      description = this.$('.editDescriptionInput').val().trim();
 
-      this.model. save({ description: description });
+      this.model.save({ description: description });
       this.render();
     }
   }

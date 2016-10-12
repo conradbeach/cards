@@ -5,14 +5,14 @@ var ListView = Backbone.View.extend({
 
   events: {
     'click h1': 'showEditTitle',
-    'keypress #editListTitle': 'saveTitleOnEnter',
-    'blur #editListTitle': 'closeEditTitle',
+    'keypress .editListTitle': 'saveTitleOnEnter',
+    'blur .editListTitle': 'closeEditTitle',
 
-    'click #deleteList': 'deleteList',
+    'click .deleteList': 'deleteList',
 
-    'click #addCard': 'showAddCard',
-    'keypress #addCardInput': 'createCardOnEnter',
-    'blur #addCardInput': 'closeAddCard'
+    'click .addCard': 'showAddCard',
+    'keypress .addCardInput': 'createCardOnEnter',
+    'blur .addCardInput': 'closeAddCard'
   },
 
   initialize: function() {
@@ -31,19 +31,19 @@ var ListView = Backbone.View.extend({
 
   showEditTitle: function() {
     this.$('h1').addClass('hidden');
-    this.$('#editListTitle').removeClass()
+    this.$('.editListTitle').removeClass('hidden')
                    .focus()
                    .val(this.model.get('title'));
   },
 
   closeEditTitle: function() {
-    this.$('h1').removeClass();
-    this.$('#editListTitle').val('').addClass('hidden');
+    this.$('h1').removeClass('hidden');
+    this.$('.editListTitle').val('').addClass('hidden');
   },
 
   saveTitleOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('#editListTitle').val().trim() });
+      this.model.save({ title: this.$('.editListTitle').val().trim() });
       this.render();
     }
   },
@@ -51,20 +51,20 @@ var ListView = Backbone.View.extend({
   showAddCard: function(event) {
     event.preventDefault();
 
-    this.$('#addCard').addClass('hidden');
-    this.$('#addCardInput').removeClass().focus();
+    this.$('.addCard').addClass('hidden');
+    this.$('.addCardInput').removeClass('hidden').focus();
   },
 
   closeAddCard: function() {
-    this.$('#addCard').removeClass();
-    this.$('#addCardInput').val('').addClass('hidden');
+    this.$('.addCard').removeClass('hidden');
+    this.$('.addCardInput').val('').addClass('hidden');
   },
 
   createCardOnEnter: function(event) {
     var title;
 
     if (event.which === ENTER_KEY) {
-      title = this.$('#addCardInput').val().trim();
+      title = this.$('.addCardInput').val().trim();
 
       this.model.cards.create({ title: title });
 
