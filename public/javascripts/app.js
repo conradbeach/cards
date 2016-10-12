@@ -3,12 +3,6 @@ var ENTER_KEY = 13;
 var app = {
   templates: JST,
 
-  viewCard: function(model) {
-    var view = new CardView({ model: model });
-
-    // TODO: Make sure you remove this view after it's done being used.
-  },
-
   eachCard: function(callback, context) {
     if (!context) { context = this; }
 
@@ -17,6 +11,24 @@ var app = {
         callback.call(context, card);
       });
     });
+  },
+
+  viewCard: function(id) {
+    var model;
+    var view;
+
+    this.eachCard(function(card) {
+      if (card.get('id') === id) {
+        model = card;
+      }
+    });
+
+    if (model) {
+      view = new CardView({ model: model });
+    } else {
+      this.router.navigate('#', { trigger: true });
+    }
+    // TODO: Make sure you remove this CardView after it's done being used.
   },
 
   search: function(query) {

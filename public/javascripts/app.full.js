@@ -18603,22 +18603,18 @@ this["JST"]["search_result"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"m
 },"useData":true});
 
 this["JST"]["simple_card"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper;
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "<span>"
-    + container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"title","hash":{},"data":data}) : helper)))
-    + "<a href=\"#\">Edit</a></span><input class=\"hidden\">";
+  return "<span><a href=\"#"
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\">"
+    + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
+    + "</a><a href=\"#\" class=\"edit\">Edit</a></span><input class=\"hidden\">";
 },"useData":true});
 var ENTER_KEY = 13;
 
 var app = {
   templates: JST,
-
-  viewCard: function(model) {
-    var view = new CardView({ model: model });
-
-    // TODO: Make sure you remove this view after it's done being used.
-  },
 
   eachCard: function(callback, context) {
     if (!context) { context = this; }
@@ -18628,6 +18624,24 @@ var app = {
         callback.call(context, card);
       });
     });
+  },
+
+  viewCard: function(id) {
+    var model;
+    var view;
+
+    this.eachCard(function(card) {
+      if (card.get('id') === id) {
+        model = card;
+      }
+    });
+
+    if (model) {
+      view = new CardView({ model: model });
+    } else {
+      this.router.navigate('#', { trigger: true });
+    }
+    // TODO: Make sure you remove this CardView after it's done being used.
   },
 
   search: function(query) {
@@ -18658,6 +18672,20 @@ Handlebars.registerHelper('formatDate', function(date) {
 
   return dateObj.toString();
 });
+
+var Router = Backbone.Router.extend({
+  routes: {
+    ':id': 'default'
+  },
+
+  default: function(id) {
+    console.log('Default route called with id: ' + id);
+    app.viewCard(id);
+  }
+});
+
+app.router = new Router();
+Backbone.history.start();
 
 var Card = Backbone.Model.extend({
   defaults: {
@@ -19011,8 +19039,7 @@ var SimpleCardView = Backbone.View.extend({
   template: app.templates.simple_card,
 
   events: {
-    'click': 'viewCard',
-    'click a': 'showEditTitle',
+    'click .edit': 'showEditTitle',
     'keypress input': 'saveTitleOnEnter',
     'blur input': 'closeEditTitle'
   },
@@ -19025,10 +19052,6 @@ var SimpleCardView = Backbone.View.extend({
 
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
-  },
-
-  viewCard: function() {
-    app.trigger('viewCard', this.model);
   },
 
   showEditTitle: function(event) {

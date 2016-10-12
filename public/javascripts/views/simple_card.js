@@ -4,8 +4,7 @@ var SimpleCardView = Backbone.View.extend({
   template: app.templates.simple_card,
 
   events: {
-    'click': 'viewCard',
-    'click a': 'showEditTitle',
+    'click .edit': 'showEditTitle',
     'keypress input': 'saveTitleOnEnter',
     'blur input': 'closeEditTitle'
   },
@@ -18,10 +17,6 @@ var SimpleCardView = Backbone.View.extend({
 
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
-  },
-
-  viewCard: function() {
-    app.trigger('viewCard', this.model);
   },
 
   showEditTitle: function(event) {
