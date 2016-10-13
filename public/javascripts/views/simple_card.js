@@ -4,13 +4,14 @@ var SimpleCardView = Backbone.View.extend({
   template: app.templates.simple_card,
 
   events: {
-    'click .edit': 'showEditTitle',
-    'keypress input': 'saveTitleOnEnter',
-    'blur input': 'closeEditTitle'
+    'click .editTitle': 'showEditTitle',
+    'keypress .editTitleInput': 'saveTitleOnEnter',
+    'blur .editTitleInput': 'closeEditTitle'
   },
 
   initialize: function() {
     this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'destroy', this.remove);
 
     this.render();
   },
@@ -21,22 +22,21 @@ var SimpleCardView = Backbone.View.extend({
 
   showEditTitle: function(event) {
     event.preventDefault();
-    event.stopImmediatePropagation();
 
-    this.$('span').addClass('hidden');
-    this.$('input').removeClass()
+    this.$('.title').addClass('hidden');
+    this.$('.editTitleInput').removeClass('hidden')
                    .focus()
                    .val(this.model.get('title'));
   },
 
   closeEditTitle: function() {
-    this.$('span').removeClass();
-    this.$('input').val('').addClass('hidden');
+    this.$('.title').removeClass('hidden');
+    this.$('.editTitleInput').val('').addClass('hidden');
   },
 
   saveTitleOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('input').val().trim() });
+      this.model.save({ title: this.$('.editTitleInput').val().trim() });
       this.render();
     }
   }

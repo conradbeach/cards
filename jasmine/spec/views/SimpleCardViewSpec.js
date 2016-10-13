@@ -1,38 +1,36 @@
-describe('SimpleCardView', function () {
+describe('SimpleCardView', function() {
   beforeEach(function() {
     this.view = new SimpleCardView({ model: app.lists.first().cards.first() });
-  })
 
-  it('renders the correct HTML', function () {
-    expect(this.view.$el.html()).toContain('Card 1 of List 1<a href="#">Edit</a>');
+    this.$title = this.view.$('.title');
+    this.$editTitleInput = this.view.$('.editTitleInput');
   });
 
-  it('triggers app.viewCard when view is clicked', function() {
-    spyOn(app, 'trigger');
-
-    this.view.$el.click();
-
-    expect(app.trigger).toHaveBeenCalledWith('viewCard', app.lists.first().cards.first());
-  });
-
-  it('shows the edit title input', function () {
-    expect(this.view.$('span')).toHaveClass('');
-    expect(this.view.$('input')).toHaveClass('hidden');
+  it('shows the edit title input', function() {
+    expect(this.$title).not.toHaveClass('hidden');
+    expect(this.$editTitleInput).toHaveClass('hidden');
 
     this.view.showEditTitle(new Event(null));
 
-    expect(this.view.$('span')).toHaveClass('hidden');
-    expect(this.view.$('input')).toHaveClass('');
-    expect(this.view.$('input').val()).toEqual('Card 1 of List 1');
+    expect(this.$title).toHaveClass('hidden');
+    expect(this.$editTitleInput).not.toHaveClass('hidden');
+    expect(this.$editTitleInput.val()).toEqual('Card 1 of List 1');
   });
 
-  it('closes and resets edit title input on blur', function() {
-    var $input = this.view.$('input');
-
+  it('closes and resets edit title input', function() {
     this.view.showEditTitle(new Event(null));
-    $input.blur();
+    this.$editTitleInput.val('New Title');
 
-    expect($input).toHaveClass('hidden');
-    expect($input.val()).toEqual('');
+    this.view.closeEditTitle();
+
+    expect(this.$editTitleInput).toHaveClass('hidden');
+    expect(this.$editTitleInput.val()).toEqual('');
+  });
+
+  it('saves the card title', function() {
+    this.$editTitleInput.val('New Title');
+    this.view.saveTitleOnEnter({ which: ENTER_KEY });
+
+    expect(this.view.model.get('title')).toEqual('New Title');
   });
 });

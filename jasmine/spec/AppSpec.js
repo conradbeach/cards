@@ -1,9 +1,9 @@
-describe('app', function () {
+describe('app', function() {
   beforeEach(function() {
     this.seed();
   })
 
-  it('search function returns correct results', function () {
+  it('search function returns correct results', function() {
     var matchingModels;
 
     matchingModels = app.search('card');

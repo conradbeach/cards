@@ -4,14 +4,14 @@ var CardView = Backbone.View.extend({
 
   events: {
     'click h1': 'showEditTitle',
-    'blur .editCardTitle': 'closeEditTitle',
-    'keypress .editCardTitle': 'saveTitleOnEnter',
+    'blur .editCardTitleInput': 'closeEditTitle',
+    'keypress .editCardTitleInput': 'saveTitleOnEnter',
 
     'click .editDescription': 'showEditDescription',
     'blur .editDescriptionInput': 'closeEditDescription',
     'keypress .editDescriptionInput': 'saveDescriptionOnEnter',
 
-    'keypress .addComment': 'addCommentOnEnter',
+    'keypress .addCommentInput': 'addCommentOnEnter',
 
     'click .editComment': 'showEditComment',
     'blur .editCommentInput': 'closeEditComment',
@@ -32,19 +32,19 @@ var CardView = Backbone.View.extend({
 
   showEditTitle: function() {
     this.$('h1').addClass('hidden');
-    this.$('.editCardTitle').removeClass('hidden')
+    this.$('.editCardTitleInput').removeClass('hidden')
                             .val(this.model.get('title'))
                             .focus();
   },
 
   closeEditTitle: function() {
     this.$('h1').removeClass('hidden');
-    this.$('.editCardTitle').val('').addClass('hidden');
+    this.$('.editCardTitleInput').val('').addClass('hidden');
   },
 
   saveTitleOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('.editCardTitle').val().trim() });
+      this.model.save({ title: this.$('.editCardTitleInput').val().trim() });
     }
   },
 
@@ -79,7 +79,7 @@ var CardView = Backbone.View.extend({
   addCommentOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
       var comments = this.model.get('comments');
-      var comment = { date: new Date(), text: this.$('.addComment').val().trim() };
+      var comment = { date: new Date(), text: this.$('.addCommentInput').val().trim() };
 
       comments.push(comment);
 

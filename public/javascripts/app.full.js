@@ -18573,9 +18573,9 @@ this["JST"]["card"] = Handlebars.template({"1":function(container,depth0,helpers
 
   return "<h1>"
     + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
-    + "</h1><input class=\"editCardTitle hidden\"><p>Description <a href=\"#\" class=\"editDescription\">Edit</a></p><p class=\"description\">"
+    + "</h1><input class=\"editCardTitleInput hidden\"><p>Description <a href=\"#\" class=\"editDescription\">Edit</a></p><p class=\"description\">"
     + alias4(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"description","hash":{},"data":data}) : helper)))
-    + "</p><input class=\"editDescriptionInput hidden\"><label for=\"comment\">Add a Comment</label><input class=\"addComment\" name=\"comment\" placeholder=\"Write a comment...\"><ul>"
+    + "</p><input class=\"editDescriptionInput hidden\"><label for=\"comment\">Add a Comment</label><input class=\"addCommentInput\" name=\"comment\" placeholder=\"Write a comment...\"><ul>"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.comments : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "</ul>";
 },"useData":true});
@@ -18585,7 +18585,7 @@ this["JST"]["list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":func
 
   return "<h1>"
     + container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"title","hash":{},"data":data}) : helper)))
-    + "<a href=\"#\" class=\"deleteList\">Delete</a></h1><input class=\"editListTitle hidden\"><ul></ul><a href=\"#\" class=\"addCard\">Add a card...</a><input class=\"addCardInput hidden\">";
+    + "<a href=\"#\" class=\"deleteList\">Delete</a></h1><input class=\"editListTitleInput hidden\"><ul></ul><a href=\"#\" class=\"addCard\">Add a card...</a><input class=\"addCardInput hidden\">";
 },"useData":true});
 
 this["JST"]["new_list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -18605,11 +18605,11 @@ this["JST"]["search_result"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"m
 this["JST"]["simple_card"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "<span><a href=\"#"
+  return "<span class=\"title\"><a href=\"#"
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\">"
     + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
-    + "</a><a href=\"#\" class=\"edit\">Edit</a></span><input class=\"hidden\">";
+    + "</a><a href=\"#\" class=\"editTitle\">Edit</a></span><input class=\"editTitleInput hidden\">";
 },"useData":true});
 var ENTER_KEY = 13;
 
@@ -18673,38 +18673,11 @@ Handlebars.registerHelper('formatDate', function(date) {
   return dateObj.toString();
 });
 
-var Router = Backbone.Router.extend({
-  routes: {
-    ':id': 'default'
-  },
-
-  default: function(id) {
-    console.log('Default route called with id: ' + id);
-    app.viewCard(id);
-  }
-});
-
-app.router = new Router();
-Backbone.history.start();
-
 var Card = Backbone.Model.extend({
   defaults: {
     title: '',
     description: '',
     comments: []
-  }
-});
-
-var List = Backbone.Model.extend({
-  defaults: {
-    title: ''
-  },
-
-  initialize: function() {
-    this.save();
-    
-    this.cards = new Cards(this.id);
-    this.cards.fetch();
   }
 });
 
@@ -18722,16 +18695,49 @@ var Cards = Backbone.Collection.extend({
   }
 });
 
-var Lists = Backbone.Collection.extend({
-  model: List,
-  localStorage: new Backbone.LocalStorage('lists-backbone'),
+var SimpleCardView = Backbone.View.extend({
+  model: Card,
+  tagName: 'li',
+  template: app.templates.simple_card,
+
+  events: {
+    'click .editTitle': 'showEditTitle',
+    'keypress .editTitleInput': 'saveTitleOnEnter',
+    'blur .editTitleInput': 'closeEditTitle'
+  },
 
   initialize: function() {
-    this.fetch();
+    this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'destroy', this.remove);
+
+    this.render();
+  },
+
+  render: function() {
+    this.$el.html(this.template(this.model.toJSON()));
+  },
+
+  showEditTitle: function(event) {
+    event.preventDefault();
+
+    this.$('.title').addClass('hidden');
+    this.$('.editTitleInput').removeClass('hidden')
+                   .focus()
+                   .val(this.model.get('title'));
+  },
+
+  closeEditTitle: function() {
+    this.$('.title').removeClass('hidden');
+    this.$('.editTitleInput').val('').addClass('hidden');
+  },
+
+  saveTitleOnEnter: function(event) {
+    if (event.which === ENTER_KEY) {
+      this.model.save({ title: this.$('.editTitleInput').val().trim() });
+      this.render();
+    }
   }
 });
-
-app.lists = new Lists();
 
 var CardView = Backbone.View.extend({
   el: 'aside',
@@ -18739,14 +18745,14 @@ var CardView = Backbone.View.extend({
 
   events: {
     'click h1': 'showEditTitle',
-    'blur .editCardTitle': 'closeEditTitle',
-    'keypress .editCardTitle': 'saveTitleOnEnter',
+    'blur .editCardTitleInput': 'closeEditTitle',
+    'keypress .editCardTitleInput': 'saveTitleOnEnter',
 
     'click .editDescription': 'showEditDescription',
     'blur .editDescriptionInput': 'closeEditDescription',
     'keypress .editDescriptionInput': 'saveDescriptionOnEnter',
 
-    'keypress .addComment': 'addCommentOnEnter',
+    'keypress .addCommentInput': 'addCommentOnEnter',
 
     'click .editComment': 'showEditComment',
     'blur .editCommentInput': 'closeEditComment',
@@ -18767,19 +18773,19 @@ var CardView = Backbone.View.extend({
 
   showEditTitle: function() {
     this.$('h1').addClass('hidden');
-    this.$('.editCardTitle').removeClass('hidden')
+    this.$('.editCardTitleInput').removeClass('hidden')
                             .val(this.model.get('title'))
                             .focus();
   },
 
   closeEditTitle: function() {
     this.$('h1').removeClass('hidden');
-    this.$('.editCardTitle').val('').addClass('hidden');
+    this.$('.editCardTitleInput').val('').addClass('hidden');
   },
 
   saveTitleOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('.editCardTitle').val().trim() });
+      this.model.save({ title: this.$('.editCardTitleInput').val().trim() });
     }
   },
 
@@ -18814,7 +18820,7 @@ var CardView = Backbone.View.extend({
   addCommentOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
       var comments = this.model.get('comments');
-      var comment = { date: new Date(), text: this.$('.addComment').val().trim() };
+      var comment = { date: new Date(), text: this.$('.addCommentInput').val().trim() };
 
       comments.push(comment);
 
@@ -18870,6 +18876,30 @@ var CardView = Backbone.View.extend({
   }
 });
 
+var List = Backbone.Model.extend({
+  defaults: {
+    title: ''
+  },
+
+  initialize: function() {
+    this.save();
+
+    this.cards = new Cards(this.id);
+    this.cards.fetch();
+  }
+});
+
+var Lists = Backbone.Collection.extend({
+  model: List,
+  localStorage: new Backbone.LocalStorage('lists-backbone'),
+
+  initialize: function() {
+    this.fetch();
+  }
+});
+
+app.lists = new Lists();
+
 var ListView = Backbone.View.extend({
   model: List,
   template: app.templates.list,
@@ -18877,8 +18907,8 @@ var ListView = Backbone.View.extend({
 
   events: {
     'click h1': 'showEditTitle',
-    'keypress .editListTitle': 'saveTitleOnEnter',
-    'blur .editListTitle': 'closeEditTitle',
+    'keypress .editListTitleInput': 'saveTitleOnEnter',
+    'blur .editListTitleInput': 'closeEditTitle',
 
     'click .deleteList': 'deleteList',
 
@@ -18888,8 +18918,10 @@ var ListView = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.listenTo(this.model, 'change', this.render());
-    this.listenTo(this.model, 'destroy', this.remove());
+    this.listenTo(this.model.cards, 'add remove', this.render);
+    this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'destroy', this.remove);
+    this.delegateEvents();
 
     this.render();
   },
@@ -18898,27 +18930,27 @@ var ListView = Backbone.View.extend({
     this.$el.html(this.template(this.model.toJSON()));
 
     this.model.cards.each(function(card) {
-      var cardView = new SimpleCardView({ model: card });
+      var view = new SimpleCardView({ model: card });
 
-      this.$('ul').append(cardView.$el);
+      this.$('ul').append(view.$el);
     }, this);
   },
 
   showEditTitle: function() {
     this.$('h1').addClass('hidden');
-    this.$('.editListTitle').removeClass('hidden')
-                   .focus()
-                   .val(this.model.get('title'));
+    this.$('.editListTitleInput').removeClass('hidden')
+                            .val(this.model.get('title'))
+                            .focus();
   },
 
   closeEditTitle: function() {
     this.$('h1').removeClass('hidden');
-    this.$('.editListTitle').val('').addClass('hidden');
+    this.$('.editListTitleInput').val('').addClass('hidden');
   },
 
   saveTitleOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('.editListTitle').val().trim() });
+      this.model.save({ title: this.$('.editListTitleInput').val().trim() });
     }
   },
 
@@ -18935,10 +18967,8 @@ var ListView = Backbone.View.extend({
   },
 
   createCardOnEnter: function(event) {
-    var title;
-
     if (event.which === ENTER_KEY) {
-      title = this.$('.addCardInput').val().trim();
+      var title = this.$('.addCardInput').val().trim();
 
       this.model.cards.create({ title: title });
     }
@@ -19033,46 +19063,15 @@ var SearchView = Backbone.View.extend({
 
 app.searchView = new SearchView();
 
-var SimpleCardView = Backbone.View.extend({
-  model: Card,
-  tagName: 'li',
-  template: app.templates.simple_card,
-
-  events: {
-    'click .edit': 'showEditTitle',
-    'keypress input': 'saveTitleOnEnter',
-    'blur input': 'closeEditTitle'
+var Router = Backbone.Router.extend({
+  routes: {
+    ':id': 'default'
   },
 
-  initialize: function() {
-    this.listenTo(this.model, 'change', this.render);
-
-    this.render();
-  },
-
-  render: function() {
-    this.$el.html(this.template(this.model.toJSON()));
-  },
-
-  showEditTitle: function(event) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-
-    this.$('span').addClass('hidden');
-    this.$('input').removeClass()
-                   .focus()
-                   .val(this.model.get('title'));
-  },
-
-  closeEditTitle: function() {
-    this.$('span').removeClass();
-    this.$('input').val('').addClass('hidden');
-  },
-
-  saveTitleOnEnter: function(event) {
-    if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('input').val().trim() });
-      this.render();
-    }
+  default: function(id) {
+    app.viewCard(id);
   }
 });
+
+app.router = new Router();
+Backbone.history.start();

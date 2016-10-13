@@ -1,5 +1,5 @@
-describe('Card model', function () {
-  it('sets the correct defaults', function () {
+describe('Card model', function() {
+  it('sets the correct defaults', function() {
     var model = new Card();
 
     expect(model.get('title')).toEqual('');
