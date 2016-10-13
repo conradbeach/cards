@@ -25,10 +25,10 @@ var app = {
 
     if (model) {
       view = new CardView({ model: model });
+      $('aside').append(view.$el);
     } else {
       this.router.navigate('#', { trigger: true });
     }
-    // TODO: Make sure you remove this CardView after it's done being used.
   },
 
   search: function(query) {

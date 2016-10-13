@@ -1,8 +1,10 @@
 var CardView = Backbone.View.extend({
-  el: 'aside',
   template: app.templates.card,
 
   events: {
+    'click .closeCard': 'closeCard',
+    'click .deleteCard': 'deleteCard',
+
     'click h1': 'showEditTitle',
     'blur .editCardTitleInput': 'closeEditTitle',
     'keypress .editCardTitleInput': 'saveTitleOnEnter',
@@ -28,6 +30,15 @@ var CardView = Backbone.View.extend({
 
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
+  },
+
+  closeCard: function() {
+    this.remove();
+  },
+
+  deleteCard: function() {
+    this.model.destroy();
+    this.remove();
   },
 
   showEditTitle: function() {

@@ -77,4 +77,20 @@ describe('CardView', function() {
     expect(this.model.get('comments').length).toEqual(originalCommentsLength + 1);
     expect(this.model.get('comments').pop().text).toEqual('New Comment');
   });
+
+  it('closes the card', function() {
+    var spy = spyOn(this.view, 'remove');
+
+    this.view.closeCard();
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('destroys the card', function() {
+    var spy = spyOn(this.model, 'destroy');
+
+    this.view.deleteCard();
+
+    expect(spy).toHaveBeenCalled();
+  });
 });

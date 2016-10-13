@@ -18573,11 +18573,11 @@ this["JST"]["card"] = Handlebars.template({"1":function(container,depth0,helpers
 
   return "<h1>"
     + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
-    + "</h1><input class=\"editCardTitleInput hidden\"><p>Description <a href=\"#\" class=\"editDescription\">Edit</a></p><p class=\"description\">"
+    + "<a href=\"#\" class=\"closeCard\">Close</a></h1><input class=\"editCardTitleInput hidden\"><p>Description <a href=\"#\" class=\"editDescription\">Edit</a></p><p class=\"description\">"
     + alias4(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"description","hash":{},"data":data}) : helper)))
     + "</p><input class=\"editDescriptionInput hidden\"><label for=\"comment\">Add a Comment</label><input class=\"addCommentInput\" name=\"comment\" placeholder=\"Write a comment...\"><ul>"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.comments : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "</ul>";
+    + "</ul><a href=\"#\" class=\"deleteCard\">Delete Card</a>";
 },"useData":true});
 
 this["JST"]["list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -18638,10 +18638,10 @@ var app = {
 
     if (model) {
       view = new CardView({ model: model });
+      $('aside').append(view.$el);
     } else {
       this.router.navigate('#', { trigger: true });
     }
-    // TODO: Make sure you remove this CardView after it's done being used.
   },
 
   search: function(query) {
@@ -18740,10 +18740,12 @@ var SimpleCardView = Backbone.View.extend({
 });
 
 var CardView = Backbone.View.extend({
-  el: 'aside',
   template: app.templates.card,
 
   events: {
+    'click .closeCard': 'closeCard',
+    'click .deleteCard': 'deleteCard',
+
     'click h1': 'showEditTitle',
     'blur .editCardTitleInput': 'closeEditTitle',
     'keypress .editCardTitleInput': 'saveTitleOnEnter',
@@ -18769,6 +18771,15 @@ var CardView = Backbone.View.extend({
 
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
+  },
+
+  closeCard: function() {
+    this.remove();
+  },
+
+  deleteCard: function() {
+    this.model.destroy();
+    this.remove();
   },
 
   showEditTitle: function() {
