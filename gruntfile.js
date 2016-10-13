@@ -16,10 +16,16 @@ module.exports = function Grunt(grunt) {
                  'public/javascripts/vendor/backbone.localStorage.js',
                  'public/javascripts/handlebars_templates.js',
                  'public/javascripts/app.js',
-                 'public/javascripts/routers/*.js',
-                 'public/javascripts/models/*.js',
-                 'public/javascripts/collections/*.js',
-                 'public/javascripts/views/*.js'];
+                 'public/javascripts/models/card.js',
+                 'public/javascripts/collections/cards.js',
+                 'public/javascripts/views/simple_card.js',
+                 'public/javascripts/views/card.js',
+                 'public/javascripts/models/list.js',
+                 'public/javascripts/collections/lists.js',
+                 'public/javascripts/views/list.js',
+                 'public/javascripts/views/lists.js',
+                 'public/javascripts/views/search.js',
+                 'public/javascripts/routers/router.js'];
 
   grunt.initConfig({
     bower_concat: {
