@@ -5,16 +5,24 @@ html
   head
     title= title
     +stylesheet_link_tag('application')
+    +stylesheet_link_tag('font-awesome/css/font-awesome.min')
+    +remote_stylesheet_link_tag('https://fonts.googleapis.com/css?family=Open+Sans:600')
+    +remote_stylesheet_link_tag('https://fonts.googleapis.com/css?family=Pacifico')
+    
   body
     header
-      p Search
-      input#search
+      div(class="searchWrapper")
+        span(class="fa fa-search" aria-hidden="true")
+        input.searchInput
+        
+      span(class="logo") Cards
+      
       ul
   
     main
       block content
       
-    aside
+    aside#cardModal
   
     +javascript_include_tag('vendor/bower')
     +javascript_include_tag('vendor/backbone.localStorage')

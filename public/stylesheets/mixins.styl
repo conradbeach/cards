@@ -1,24 +1,33 @@
-font = 'Lato', sans-serif
+primary_font = 'Open Sans', sans-serif
+logo_font = 'Pacifico', cursive
+
+section_width = 250px
 
 colors = {
-  body_text: #444
-  button_bg: #00a388
-  button_text: #fff
-  main_bg: #fff
-  delete: #b00b00
+  header_bg: #005c99,
+  body_bg: #0079bf,
+  search_bg: #4389b7,
+  secondary_bg: #0061a1,
+  list_bg: #dee0e2,
+  card_bg: #ffffff,
+  cardview_bg: #eaecee,
+  heading_text: #f5f4f5,
+  search_text: #ffffff,
+  primary_text: #444444,
+  secondary_text: #808080,
+  box_shadow: #aaaaaa
 }
 
-button()
-  background-color: colors.button_bg
-  border: none
-  border-radius: 8px
-  color: colors.button_text
-  cursor: pointer
-  display: inline-block
-  font-size: 18px
-  padding: 10px 25px
-  text-decoration: none
-  transition: background-color 100ms ease
+card()
+  background-color: colors.card_bg
+  border-radius: 3px
+  box-shadow: 0 1px 1px 1px colors.box_shadow
+  margin: 8px 0
+  padding: 8px
+  position: relative
 
   &:hover
-    background-color: darken(colors.button_bg, 10)
+    background-color: darken(colors.card_bg, 5)
+
+list()
+  

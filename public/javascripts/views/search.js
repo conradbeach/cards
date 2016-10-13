@@ -3,11 +3,11 @@ var SearchView = Backbone.View.extend({
   resultTemplate: app.templates.search_result,
 
   events: {
-    'keyup #search': 'search'
+    'keyup .searchInput': 'search'
   },
 
   search: function() {
-    var query = this.$('#search').val();
+    var query = this.$('.searchInput').val();
     var matchingCards = app.search(query);
     var $ul = this.$('ul');
 
