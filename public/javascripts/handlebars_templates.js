@@ -25,9 +25,9 @@ this["JST"]["card"] = Handlebars.template({"1":function(container,depth0,helpers
 this["JST"]["list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper;
 
-  return "<h1>"
+  return "<a href=\"#\" class=\"deleteList\">Delete</a><a href=\"#\" class=\"cancelDeleteList hidden\">Cancel Delete</a><a href=\"#\" class=\"confirmDeleteList hidden\">Confirm Delete</a><h1>"
     + container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"title","hash":{},"data":data}) : helper)))
-    + "<a href=\"#\" class=\"deleteList\">Delete</a></h1><input class=\"editListTitleInput hidden\"><ul></ul><a href=\"#\" class=\"addCard\">Add a card...</a><input class=\"addCardInput hidden\">";
+    + "</h1><input class=\"editListTitleInput hidden\"><ul></ul><a href=\"#\" class=\"addCard\">Add a card...</a><input class=\"addCardInput hidden\">";
 },"useData":true});
 
 this["JST"]["new_list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {

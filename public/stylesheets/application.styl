@@ -84,9 +84,10 @@ main
 section
   background-color: colors.list_bg
   border-radius: 5px
+  float: left
   margin: 12px
   padding: 8px
-  float: left
+  position: relative
   width: section_width
 
   h1
@@ -95,37 +96,29 @@ section
     &:hover
       cursor: pointer
 
-    > a // Delete button
-      float: right
-      height: 12px
-      margin-right: 5px
-      overflow: hidden
-      position: relative
-      text-indent: 9999px
-      transform: rotate(45deg)
-      width: 12px
+  .deleteList
+    closeButton()
 
-      &:before,
-      &:after
-        background-color: colors.secondary_text
-        content: ''
-        position: absolute
+    &:before,
+    &:after
+      background-color: colors.delete_bg
 
-      &:before
-        bottom: 0
-        left: 50%
-        margin-left: -1px
-        top: 0
-        width: 2px
+  .confirmDeleteList,
+  .cancelDeleteList
+    position: absolute
+    z-index: 1
+    right: -175px
+    width: 150px
 
-      &:after
-        height: 2px
-        left: 0
-        margin-top: -1px
-        right: 0
-        top: 50%
+  .cancelDeleteList
+    greenButton()
+    top: 0
 
-  > a
+  .confirmDeleteList
+    deleteButton()
+    top: 40px
+
+  .addCard
     color: colors.secondary_text
     display: block
     font-size: .8em

@@ -8,7 +8,9 @@ var ListView = Backbone.View.extend({
     'keypress .editListTitleInput': 'saveTitleOnEnter',
     'blur .editListTitleInput': 'closeEditTitle',
 
-    'click .deleteList': 'deleteList',
+    'click .deleteList': 'askDeleteList',
+    'click .confirmDeleteList': 'deleteList',
+    'click .cancelDeleteList': 'cancelDeleteList',
 
     'click .addCard': 'showAddCard',
     'keypress .addCardInput': 'createCardOnEnter',
@@ -72,16 +74,24 @@ var ListView = Backbone.View.extend({
     }
   },
 
+  askDeleteList: function(event) {
+    event.preventDefault();
+
+    this.$('.confirmDeleteList').slideToggle(150);
+    this.$('.cancelDeleteList').slideToggle(150);
+  },
+
+  cancelDeleteList: function(event) {
+    event.preventDefault();
+
+    this.$('.confirmDeleteList').slideToggle(150);
+    this.$('.cancelDeleteList').slideToggle(150);
+  },
+
   deleteList: function(event) {
     event.preventDefault();
-    event.stopImmediatePropagation();
 
-    // TODO: Add a confirmation pane for deleting.
-    var confirmed = confirm('Are you sure you want to delete this list?');
-
-    if (confirmed) {
-      this.model.cards.destroyAll();
-      this.model.destroy();
-    }
+    this.model.cards.destroyAll();
+    this.model.destroy();
   }
 });
