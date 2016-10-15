@@ -27,7 +27,7 @@ var CardView = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'sync', this.render);
 
     this.render();
   },
@@ -96,7 +96,7 @@ var CardView = Backbone.View.extend({
     var description;
 
     if (event.which === ENTER_KEY) {
-      description = this.$('.editDescriptionInput').val().trim();
+      description = this.$('.editDescriptionInput').val();
 
       this.model.save({ description: description });
     }
@@ -109,7 +109,7 @@ var CardView = Backbone.View.extend({
   addCommentOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
       var comments = this.model.get('comments');
-      var comment = { date: new Date(), text: this.$('.addCommentInput').val().trim() };
+      var comment = { date: new Date(), text: this.$('.addCommentInput').val() };
 
       comments.push(comment);
 
