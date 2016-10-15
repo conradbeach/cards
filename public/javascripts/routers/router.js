@@ -4,7 +4,7 @@ var Router = Backbone.Router.extend({
   },
 
   default: function(id) {
-    app.viewCard(id);
+    app.showCard(id);
   }
 });
 

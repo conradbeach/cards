@@ -13,7 +13,7 @@ var app = {
     });
   },
 
-  viewCard: function(id) {
+  showCard: function(id) {
     var model;
     var view;
 
@@ -66,7 +66,6 @@ var app = {
 
 _.extend(app, Backbone.Events);
 
-app.on('viewCard', app.viewCard);
 $('aside').on('click', app.shouldCloseCard.bind(app));
 
 Handlebars.registerHelper('formatDate', function(date) {
