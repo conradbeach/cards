@@ -98,15 +98,18 @@ section {
 }
 section h1 {
   font-weight: bold;
+  font-size: 1.25em;
+  margin-bottom: 7px;
 }
 section h1:hover {
   cursor: pointer;
 }
+section .editListTitleInput {
+  width: 90%;
+}
 section .addCard {
   color: #808080;
-  display: block;
   font-size: 0.8em;
-  margin-top: 15px;
 }
 section .deleteList {
   float: right;
@@ -180,6 +183,7 @@ section ul li {
   margin: 8px 0;
   padding: 8px;
   position: relative;
+  line-height: 1.25em;
 }
 section ul li:hover {
   background-color: #f2f2f2;
@@ -195,7 +199,7 @@ section ul li .editTitle {
   padding: 3px;
   position: absolute;
   right: 5px;
-  top: 5px;
+  top: 7px;
 }
 section ul li .editTitle:hover {
   background-color: #e0e0e0;
@@ -266,6 +270,9 @@ aside .container h2 {
 }
 aside .container h2 span {
   margin-right: 10px;
+}
+aside .container p {
+  line-height: 1.25em;
 }
 aside .container .description:hover .editDescription {
   display: inline-block;
