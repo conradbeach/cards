@@ -19,7 +19,7 @@ this["JST"]["card"] = Handlebars.template({"1":function(container,depth0,helpers
     + alias4(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"description","hash":{},"data":data}) : helper)))
     + "</p><textarea class=\"editDescriptionInput hidden\"></textarea></div><h2><span class=\"fa fa-comment-o\" aria-hidden=\"true\"></span>Add a Comment</h2><textarea class=\"addCommentInput\" name=\"comment\" placeholder=\"Write a comment...\"></textarea><ul>"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.comments : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "</ul><div class=\"deleteButtons\"><a href=\"#\" class=\"deleteCard\">Delete Card</a><a href=\"#\" class=\"cancelDeleteCard hidden\">Cancel Delete</a><a href=\"#\" class=\"confirmDeleteCard hidden\">Confirm Delete</a></div>";
+    + "</ul><div class=\"deleteButtons\"><a href=\"#\" class=\"deleteCard\">Delete Card</a><a href=\"#\" class=\"cancelDeleteCard hidden\">Cancel</a><a href=\"#\" class=\"confirmDeleteCard hidden\">Confirm</a></div>";
 },"useData":true});
 
 this["JST"]["list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
