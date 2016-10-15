@@ -6,7 +6,8 @@
 // ------------
 
 body
-  font-family: primary_font
+  font-family: $primary_font
+  height: 100vh
 
 .hidden
   display: none
@@ -21,10 +22,10 @@ a
 
 header
   background-color: colors.header_bg
+  color: colors.heading_text
   padding: 8px
   position: relative
   text-align: center
-  color: colors.heading_text
 
   .searchWrapper
     float: left
@@ -43,20 +44,20 @@ header
       width: 150px
 
   .logo
-    font-family: logo_font
+    font-family: $logo_font
     font-size: 1.5em
     vertical-align: middle
 
   ul
     background-color: colors.list_bg
     border-radius: 5px
+    box-shadow: 0 2px 7px black
     color: colors.primary_text
+    left: 30px
     position: absolute
     top: 40px
-    left: 30px
     width: 300px
     z-index: 2
-    box-shadow: 0 2px 7px black
 
     li
       card()
@@ -68,7 +69,7 @@ header
 
 main
   background-color: colors.body_bg
-  height: 100vh
+  height: 100%
 
   section:last-child
     background-color: colors.secondary_bg
@@ -88,7 +89,7 @@ section
   margin: 12px
   padding: 8px
   position: relative
-  width: section_width
+  width: $section_width
 
   h1
     font-weight: bold
@@ -96,19 +97,25 @@ section
     &:hover
       cursor: pointer
 
+  .addCard
+    color: colors.secondary_text
+    display: block
+    font-size: .8em
+    margin-top: 15px
+
   .deleteList
     closeButton()
 
-    &:before,
-    &:after
+    &:after,
+    &:before
       background-color: colors.delete_bg
 
-  .confirmDeleteList,
-  .cancelDeleteList
+  .cancelDeleteList,
+  .confirmDeleteList
     position: absolute
-    z-index: 1
     right: -175px
     width: 150px
+    z-index: 1
 
   .cancelDeleteList
     greenButton()
@@ -117,12 +124,6 @@ section
   .confirmDeleteList
     deleteButton()
     top: 40px
-
-  .addCard
-    color: colors.secondary_text
-    display: block
-    font-size: .8em
-    margin-top: 15px
 
 
 // Card
@@ -135,8 +136,8 @@ section
 
       &:hover
         .editTitle
-          display: block
           background-color: darken(colors.card_bg, 5)
+          display: block
 
       .editTitle
         border-radius: 3px

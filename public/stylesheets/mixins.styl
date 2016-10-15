@@ -1,7 +1,7 @@
-primary_font = 'Open Sans', sans-serif
-logo_font = 'Pacifico', cursive
+$primary_font = 'Open Sans', sans-serif
+$logo_font = 'Pacifico', cursive
 
-section_width = 250px
+$section_width = 250px
 
 colors = {
   header_bg: #005c99,
@@ -15,7 +15,11 @@ colors = {
   search_text: #ffffff,
   primary_text: #444444,
   secondary_text: #808080,
-  box_shadow: #aaaaaa
+  box_shadow: #aaaaaa,
+  delete_bg: #e95b4b,
+  delete_shadow: #ae4736,
+  green_bg: #00bf8f,
+  green_shadow: #00664C
 }
 
 card()
@@ -50,3 +54,34 @@ greenButton()
 
   &:hover
     background-color: darken(colors.green_bg, 5)
+
+
+closeButton()
+  float: right
+  height: 12px
+  margin-right: 5px
+  overflow: hidden
+  position: relative
+  text-indent: 9999px
+  transform: rotate(45deg)
+  width: 12px
+
+  &:before,
+  &:after
+    background-color: colors.secondary_text
+    content: ''
+    position: absolute
+
+  &:before
+    bottom: 0
+    left: 50%
+    margin-left: -1px
+    top: 0
+    width: 2px
+
+  &:after
+    height: 2px
+    left: 0
+    margin-top: -1px
+    right: 0
+    top: 50%

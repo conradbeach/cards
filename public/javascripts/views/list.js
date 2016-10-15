@@ -74,18 +74,19 @@ var ListView = Backbone.View.extend({
     }
   },
 
-  askDeleteList: function(event) {
-    event.preventDefault();
-
+  toggleDeleteButtons: function() {
     this.$('.confirmDeleteList').slideToggle(150);
     this.$('.cancelDeleteList').slideToggle(150);
   },
 
+  askDeleteList: function(event) {
+    event.preventDefault();
+    this.toggleDeleteButtons();
+  },
+
   cancelDeleteList: function(event) {
     event.preventDefault();
-
-    this.$('.confirmDeleteList').slideToggle(150);
-    this.$('.cancelDeleteList').slideToggle(150);
+    this.toggleDeleteButtons();
   },
 
   deleteList: function(event) {

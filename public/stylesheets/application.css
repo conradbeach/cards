@@ -1,6 +1,7 @@
 @import 'reset.css';
 body {
   font-family: 'Open Sans', sans-serif;
+  height: 100vh;
 }
 .hidden {
   display: none;
@@ -11,10 +12,10 @@ a {
 }
 header {
   background-color: #005c99;
+  color: #f5f4f5;
   padding: 8px;
   position: relative;
   text-align: center;
-  color: #f5f4f5;
 }
 header .searchWrapper {
   float: left;
@@ -40,13 +41,13 @@ header .logo {
 header ul {
   background-color: #dee0e2;
   border-radius: 5px;
+  box-shadow: 0 2px 7px #000;
   color: #444;
+  left: 30px;
   position: absolute;
   top: 40px;
-  left: 30px;
   width: 300px;
   z-index: 2;
-  box-shadow: 0 2px 7px #000;
 }
 header ul li {
   background-color: #fff;
@@ -62,7 +63,7 @@ header ul li:hover {
 }
 main {
   background-color: #0079bf;
-  height: 100vh;
+  height: 100%;
 }
 main section:last-child {
   background-color: #0061a1;
@@ -75,9 +76,10 @@ main section:last-child a {
 section {
   background-color: #dee0e2;
   border-radius: 5px;
+  float: left;
   margin: 12px;
   padding: 8px;
-  float: left;
+  position: relative;
   width: 250px;
 }
 section h1 {
@@ -86,7 +88,13 @@ section h1 {
 section h1:hover {
   cursor: pointer;
 }
-section h1 > a {
+section .addCard {
+  color: #808080;
+  display: block;
+  font-size: 0.8em;
+  margin-top: 15px;
+}
+section .deleteList {
   float: right;
   height: 12px;
   margin-right: 5px;
@@ -96,31 +104,60 @@ section h1 > a {
   transform: rotate(45deg);
   width: 12px;
 }
-section h1 > a:before,
-section h1 > a:after {
+section .deleteList:before,
+section .deleteList:after {
   background-color: #808080;
   content: '';
   position: absolute;
 }
-section h1 > a:before {
+section .deleteList:before {
   bottom: 0;
   left: 50%;
   margin-left: -1px;
   top: 0;
   width: 2px;
 }
-section h1 > a:after {
+section .deleteList:after {
   height: 2px;
   left: 0;
   margin-top: -1px;
   right: 0;
   top: 50%;
 }
-section > a {
-  color: #808080;
-  display: block;
-  font-size: 0.8em;
-  margin-top: 15px;
+section .deleteList:after,
+section .deleteList:before {
+  background-color: #e95b4b;
+}
+section .cancelDeleteList,
+section .confirmDeleteList {
+  position: absolute;
+  right: -175px;
+  width: 150px;
+  z-index: 1;
+}
+section .cancelDeleteList {
+  border-radius: 5px;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  background-color: #00bf8f;
+  box-shadow: 0 1px #00664c;
+  top: 0;
+}
+section .cancelDeleteList:hover {
+  background-color: #00a67c;
+}
+section .confirmDeleteList {
+  border-radius: 5px;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  background-color: #e95b4b;
+  box-shadow: 0 1px #ae4736;
+  top: 40px;
+}
+section .confirmDeleteList:hover {
+  background-color: #e64634;
 }
 section ul li {
   background-color: #fff;
@@ -134,8 +171,8 @@ section ul li:hover {
   background-color: #f2f2f2;
 }
 section ul li:hover .editTitle {
-  display: block;
   background-color: #f2f2f2;
+  display: block;
 }
 section ul li .editTitle {
   border-radius: 3px;
@@ -148,4 +185,154 @@ section ul li .editTitle {
 }
 section ul li .editTitle:hover {
   background-color: #e0e0e0;
+}
+aside {
+  background-color: rgba(0,0,0,0.5);
+  bottom: 0;
+  content: "";
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+aside .container {
+  background-color: #eaecee;
+  border-radius: 5px;
+  box-sizing: border-box;
+  left: 50%;
+  margin-left: -275px;
+  padding: 20px 15px;
+  position: absolute;
+  top: 60px;
+  width: 550px;
+  z-index: 2;
+}
+aside .container h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+aside .container .closeCard {
+  float: right;
+  height: 12px;
+  margin-right: 5px;
+  overflow: hidden;
+  position: relative;
+  text-indent: 9999px;
+  transform: rotate(45deg);
+  width: 12px;
+}
+aside .container .closeCard:before,
+aside .container .closeCard:after {
+  background-color: #808080;
+  content: '';
+  position: absolute;
+}
+aside .container .closeCard:before {
+  bottom: 0;
+  left: 50%;
+  margin-left: -1px;
+  top: 0;
+  width: 2px;
+}
+aside .container .closeCard:after {
+  height: 2px;
+  left: 0;
+  margin-top: -1px;
+  right: 0;
+  top: 50%;
+}
+aside .container h2 {
+  display: inline-block;
+  font-size: 1.15em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-top: 35px;
+}
+aside .container h2 span {
+  margin-right: 10px;
+}
+aside .container .description:hover .editDescription {
+  display: inline-block;
+}
+aside .container .description .editDescription {
+  border-radius: 3px;
+  color: #808080;
+  display: none;
+  margin-left: 10px;
+  padding: 3px;
+}
+aside .container .description .editDescription:hover {
+  background-color: #dcdfe3;
+}
+aside .container .comment {
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px 1px #aaa;
+  margin: 8px 0;
+  padding: 8px;
+  position: relative;
+  margin-top: 12px;
+}
+aside .container .comment:hover {
+  background-color: #f2f2f2;
+}
+aside .container .comment:hover {
+  background-color: #fff;
+}
+aside .container .commentDate {
+  color: #808080;
+  font-size: 0.8em;
+  margin-top: 3px;
+}
+aside .container .commentDate a {
+  text-decoration: underline;
+}
+aside .container .deleteButtons {
+  height: 40px;
+  margin-top: 50px;
+  position: relative;
+}
+aside .container .deleteCard,
+aside .container .confirmDeleteCard,
+aside .container .cancelDeleteCard {
+  position: absolute;
+  width: 150px;
+}
+aside .container .deleteCard {
+  border-radius: 5px;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  background-color: #e95b4b;
+  box-shadow: 0 1px #ae4736;
+  left: 0;
+}
+aside .container .deleteCard:hover {
+  background-color: #e64634;
+}
+aside .container .cancelDeleteCard {
+  border-radius: 5px;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  background-color: #00bf8f;
+  box-shadow: 0 1px #00664c;
+  left: 175px;
+}
+aside .container .cancelDeleteCard:hover {
+  background-color: #00a67c;
+}
+aside .container .confirmDeleteCard {
+  border-radius: 5px;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  background-color: #e95b4b;
+  box-shadow: 0 1px #ae4736;
+  left: 350px;
+}
+aside .container .confirmDeleteCard:hover {
+  background-color: #e64634;
 }
