@@ -4,7 +4,7 @@ var CardView = Backbone.View.extend({
 
   events: {
     'click .closeCard': 'closeCard',
-    
+
     'click .deleteCard': 'askDeleteCard',
     'click .cancelDeleteCard': 'cancelDeleteCard',
     'click .confirmDeleteCard': 'deleteCard',
@@ -81,14 +81,14 @@ var CardView = Backbone.View.extend({
   showEditDescription: function(event) {
     event.preventDefault();
 
-    this.$('.description').addClass('hidden');
+    this.$('.descriptionText').addClass('hidden');
     this.$('.editDescriptionInput').removeClass('hidden')
                                    .val(this.model.get('description'))
                                    .focus();
   },
 
   closeEditDescription: function() {
-    this.$('.description').removeClass('hidden');
+    this.$('.descriptionText').removeClass('hidden');
     this.$('.editDescriptionInput').val('').addClass('hidden');
   },
 
