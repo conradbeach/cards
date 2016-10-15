@@ -37,7 +37,7 @@ var CardView = Backbone.View.extend({
   },
 
   closeCard: function() {
-    app.closeCard(this);
+    app.closeCard();
   },
 
   toggleDeleteButtons: function() {

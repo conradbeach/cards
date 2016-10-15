@@ -24,16 +24,23 @@ var app = {
     });
 
     if (model) {
-      view = new CardView({ model: model });
-      $('aside').append(view.$el);
+      this.currentCardView = new CardView({ model: model });
+      $('aside').append(this.currentCardView.$el);
       $('aside').removeClass('hidden');
     } else {
       this.router.navigate('#', { trigger: true });
     }
   },
 
-  closeCard: function(view) {
-    view.remove();
+  shouldCloseCard: function(event) {
+    if (event.target === $('aside')[0]) {
+      this.closeCard();
+    }
+  },
+
+  closeCard: function() {
+    this.currentCardView.remove();
+    delete this.currentCardView;
     $('aside').addClass('hidden');
   },
 
@@ -59,6 +66,7 @@ var app = {
 _.extend(app, Backbone.Events);
 
 app.on('viewCard', app.viewCard);
+$('aside').on('click', app.shouldCloseCard.bind(app));
 
 Handlebars.registerHelper('formatDate', function(date) {
   var dateObj = new Date(date);

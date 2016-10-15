@@ -18637,16 +18637,23 @@ var app = {
     });
 
     if (model) {
-      view = new CardView({ model: model });
-      $('aside').append(view.$el);
+      this.currentCardView = new CardView({ model: model });
+      $('aside').append(this.currentCardView.$el);
       $('aside').removeClass('hidden');
     } else {
       this.router.navigate('#', { trigger: true });
     }
   },
 
-  closeCard: function(view) {
-    view.remove();
+  shouldCloseCard: function(event) {
+    if (event.target === $('aside')[0]) {
+      this.closeCard();
+    }
+  },
+
+  closeCard: function() {
+    this.currentCardView.remove();
+    delete this.currentCardView;
     $('aside').addClass('hidden');
   },
 
@@ -18672,6 +18679,7 @@ var app = {
 _.extend(app, Backbone.Events);
 
 app.on('viewCard', app.viewCard);
+$('aside').on('click', app.shouldCloseCard.bind(app));
 
 Handlebars.registerHelper('formatDate', function(date) {
   var dateObj = new Date(date);
@@ -18774,7 +18782,7 @@ var CardView = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'sync', this.render);
 
     this.render();
   },
@@ -18784,7 +18792,7 @@ var CardView = Backbone.View.extend({
   },
 
   closeCard: function() {
-    app.closeCard(this);
+    app.closeCard();
   },
 
   toggleDeleteButtons: function() {
@@ -18843,7 +18851,7 @@ var CardView = Backbone.View.extend({
     var description;
 
     if (event.which === ENTER_KEY) {
-      description = this.$('.editDescriptionInput').val().trim();
+      description = this.$('.editDescriptionInput').val();
 
       this.model.save({ description: description });
     }
@@ -18856,7 +18864,7 @@ var CardView = Backbone.View.extend({
   addCommentOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
       var comments = this.model.get('comments');
-      var comment = { date: new Date(), text: this.$('.addCommentInput').val().trim() };
+      var comment = { date: new Date(), text: this.$('.addCommentInput').val() };
 
       comments.push(comment);
 
