@@ -1,7 +1,7 @@
 @import 'reset.css';
 body {
+  color: #4d4d4d;
   font-family: 'Open Sans', sans-serif;
-  height: 100vh;
 }
 .hidden {
   display: none;
@@ -12,14 +12,14 @@ a {
 }
 textarea {
   background-color: inherit;
-  border: 1px solid #aaa;
-  padding: 4px 6px;
-  border-radius: 3px;
-  width: 100%;
   box-sizing: border-box;
-  font-size: 1.2em;
+  border: 1px solid #aaa;
+  border-radius: 3px;
   color: inherit;
+  font-size: 1.2em;
+  padding: 4px 6px;
   resize: none;
+  width: 100%;
 }
 textarea:focus {
   outline: 0;
@@ -28,8 +28,11 @@ header {
   background-color: #005c99;
   color: #f5f4f5;
   padding: 8px;
-  position: relative;
+  position: fixed;
+  width: 100vw;
+  height: 25px;
   text-align: center;
+  z-index: 2;
 }
 header .searchWrapper {
   float: left;
@@ -56,12 +59,11 @@ header ul {
   background-color: #dee0e2;
   border-radius: 5px;
   box-shadow: 0 2px 7px #000;
-  color: #444;
+  color: #4d4d4d;
   left: 30px;
   position: absolute;
   top: 40px;
   width: 300px;
-  z-index: 2;
 }
 header ul li {
   background-color: #fff;
@@ -77,10 +79,17 @@ header ul li:hover {
 }
 main {
   background-color: #0079bf;
-  height: 100%;
+  box-sizing: border-box;
+  height: 100vh;
+  padding-top: 40px;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 main section:last-child {
   background-color: #0061a1;
+}
+main section:last-child .addListInput {
+  color: #f5f4f5;
 }
 main section:last-child a {
   color: #f5f4f5;
@@ -90,10 +99,12 @@ main section:last-child a {
 section {
   background-color: #dee0e2;
   border-radius: 5px;
-  float: left;
+  display: inline-block;
   margin: 12px;
   padding: 8px;
   position: relative;
+  vertical-align: top;
+  white-space: normal;
   width: 250px;
 }
 section h1 {
@@ -176,6 +187,10 @@ section .confirmDeleteList {
 section .confirmDeleteList:hover {
   background-color: #e64634;
 }
+section ul {
+  max-height: 77vh;
+  overflow: scroll;
+}
 section ul li {
   background-color: #fff;
   border-radius: 3px;
@@ -212,7 +227,7 @@ aside {
   position: fixed;
   right: 0;
   top: 0;
-  z-index: 1;
+  z-index: 3;
 }
 aside .container {
   background-color: #eaecee;
@@ -224,7 +239,6 @@ aside .container {
   position: absolute;
   top: 60px;
   width: 550px;
-  z-index: 2;
 }
 aside .container h1 {
   font-size: 1.5em;
@@ -271,6 +285,7 @@ aside .container h2 {
 aside .container h2 span {
   margin-right: 10px;
 }
+aside .container h1,
 aside .container p {
   line-height: 1.25em;
 }
