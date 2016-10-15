@@ -42,6 +42,7 @@ var app = {
     this.currentCardView.remove();
     delete this.currentCardView;
     $('aside').addClass('hidden');
+    this.router.navigate('#', { trigger: true });
   },
 
   search: function(query) {

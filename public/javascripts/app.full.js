@@ -18655,6 +18655,7 @@ var app = {
     this.currentCardView.remove();
     delete this.currentCardView;
     $('aside').addClass('hidden');
+    this.router.navigate('#', { trigger: true });
   },
 
   search: function(query) {
@@ -18810,7 +18811,9 @@ var CardView = Backbone.View.extend({
     this.toggleDeleteButtons();
   },
 
-  deleteCard: function() {
+  deleteCard: function(event) {
+    event.preventDefault();
+
     this.model.destroy();
     this.closeCard();
   },

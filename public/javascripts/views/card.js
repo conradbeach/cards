@@ -55,7 +55,9 @@ var CardView = Backbone.View.extend({
     this.toggleDeleteButtons();
   },
 
-  deleteCard: function() {
+  deleteCard: function(event) {
+    event.preventDefault();
+
     this.model.destroy();
     this.closeCard();
   },
