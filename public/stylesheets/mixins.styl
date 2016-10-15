@@ -29,5 +29,24 @@ card()
   &:hover
     background-color: darken(colors.card_bg, 5)
 
-list()
-  
+button()
+  border-radius: 5px
+  color: colors.search_text
+  padding: 10px
+  text-align: center
+
+deleteButton()
+  button()
+  background-color: colors.delete_bg
+  box-shadow: 0 1px colors.delete_shadow
+
+  &:hover
+    background-color: darken(colors.delete_bg, 5)
+
+greenButton()
+  button()
+  background-color: colors.green_bg
+  box-shadow: 0 1px colors.green_shadow
+
+  &:hover
+    background-color: darken(colors.green_bg, 5)

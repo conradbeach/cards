@@ -7,19 +7,19 @@ this["JST"]["card"] = Handlebars.template({"1":function(container,depth0,helpers
     + alias3(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : alias2),(typeof helper === "function" ? helper.call(alias1,{"name":"index","hash":{},"data":data}) : helper)))
     + "\"><p class=\"comment\">"
     + alias3(container.lambda((depth0 != null ? depth0.text : depth0), depth0))
-    + "</p><input class=\"editCommentInput hidden\"><p>on "
+    + "</p><input class=\"editCommentInput hidden\"><p class=\"commentDate\">on "
     + alias3((helpers.formatDate || (depth0 && depth0.formatDate) || alias2).call(alias1,(depth0 != null ? depth0.date : depth0),{"name":"formatDate","hash":{},"data":data}))
-    + " <a href=\"#\" class=\"editComment\">Edit</a> <a href=\"#\" class=\"deleteComment\">Delete</a></p></li>";
+    + " - <a href=\"#\" class=\"editComment\">Edit</a> - <a href=\"#\" class=\"deleteComment\">Delete</a></p></li>";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "<h1>"
+  return "<a href=\"#\" class=\"closeCard\">Close</a><h1>"
     + alias4(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
-    + "<a href=\"#\" class=\"closeCard\">Close</a></h1><input class=\"editCardTitleInput hidden\"><p>Description <a href=\"#\" class=\"editDescription\">Edit</a></p><p class=\"description\">"
+    + "</h1><input class=\"editCardTitleInput hidden\"><div class=\"description\"><h2><span class=\"fa fa-align-left\" aria-hidden=\"true\"></span>Description</h2><a href=\"#\" class=\"editDescription fa fa-pencil\"></a><p class=\"descriptionText\">"
     + alias4(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"description","hash":{},"data":data}) : helper)))
-    + "</p><input class=\"editDescriptionInput hidden\"><label for=\"comment\">Add a Comment</label><input class=\"addCommentInput\" name=\"comment\" placeholder=\"Write a comment...\"><ul>"
+    + "</p><input class=\"editDescriptionInput hidden\"></div><h2><span class=\"fa fa-comment-o\" aria-hidden=\"true\"></span>Add a Comment</h2><input class=\"addCommentInput\" name=\"comment\" placeholder=\"Write a comment...\"><ul>"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.comments : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "</ul><a href=\"#\" class=\"deleteCard\">Delete Card</a>";
+    + "</ul><div class=\"deleteButtons\"><a href=\"#\" class=\"deleteCard\">Delete Card</a><a href=\"#\" class=\"cancelDeleteCard hidden\">Cancel Delete</a><a href=\"#\" class=\"confirmDeleteCard hidden\">Confirm Delete</a></div>";
 },"useData":true});
 
 this["JST"]["list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {

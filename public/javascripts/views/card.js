@@ -1,9 +1,13 @@
 var CardView = Backbone.View.extend({
   template: app.templates.card,
+  className: 'container',
 
   events: {
     'click .closeCard': 'closeCard',
-    'click .deleteCard': 'deleteCard',
+    
+    'click .deleteCard': 'askDeleteCard',
+    'click .cancelDeleteCard': 'cancelDeleteCard',
+    'click .confirmDeleteCard': 'deleteCard',
 
     'click h1': 'showEditTitle',
     'blur .editCardTitleInput': 'closeEditTitle',
@@ -33,12 +37,27 @@ var CardView = Backbone.View.extend({
   },
 
   closeCard: function() {
-    this.remove();
+    app.closeCard(this);
+  },
+
+  toggleDeleteButtons: function() {
+    this.$('.cancelDeleteCard').slideToggle(150);
+    this.$('.confirmDeleteCard').slideToggle(150);
+  },
+
+  askDeleteCard: function(event) {
+    event.preventDefault();
+    this.toggleDeleteButtons();
+  },
+
+  cancelDeleteCard: function(event) {
+    event.preventDefault();
+    this.toggleDeleteButtons();
   },
 
   deleteCard: function() {
     this.model.destroy();
-    this.remove();
+    this.closeCard();
   },
 
   showEditTitle: function() {

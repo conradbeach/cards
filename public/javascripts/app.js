@@ -26,9 +26,15 @@ var app = {
     if (model) {
       view = new CardView({ model: model });
       $('aside').append(view.$el);
+      $('aside').removeClass('hidden');
     } else {
       this.router.navigate('#', { trigger: true });
     }
+  },
+
+  closeCard: function(view) {
+    view.remove();
+    $('aside').addClass('hidden');
   },
 
   search: function(query) {

@@ -1,11 +1,14 @@
-<h1>{{title}}<a href="#" class="closeCard">Close</a></h1>
+<a href="#" class="closeCard">Close</a>
+<h1>{{title}}</h1>
 <input class="editCardTitleInput hidden">
 
-<p>Description <a href="#" class="editDescription">Edit</a></p>
-<p class="description">{{description}}</p>
-<input class="editDescriptionInput hidden">
+<div class="description">
+  <h2><span class="fa fa-align-left" aria-hidden="true"></span>Description</h2><a href="#" class="editDescription fa fa-pencil"></a>
+  <p class="descriptionText">{{description}}</p>
+  <input class="editDescriptionInput hidden">
+</div>
 
-<label for="comment">Add a Comment</label>
+<h2><span class="fa fa-comment-o" aria-hidden="true"></span>Add a Comment</h2>
 <input class="addCommentInput" name="comment" placeholder="Write a comment...">
 
 <ul>
@@ -13,9 +16,13 @@
     <li data-index="{{@index}}">
       <p class="comment">{{this.text}}</p>
       <input class="editCommentInput hidden">
-      <p>on {{formatDate this.date}} <a href="#" class="editComment">Edit</a> <a href="#" class="deleteComment">Delete</a></p>
+      <p class="commentDate">on {{formatDate this.date}} - <a href="#" class="editComment">Edit</a> - <a href="#" class="deleteComment">Delete</a></p>
     </li>
   {{/each}}
 </ul>
 
-<a href="#" class="deleteCard">Delete Card</a>
+<div class="deleteButtons">
+  <a href="#" class="deleteCard">Delete Card</a>
+  <a href="#" class="cancelDeleteCard hidden">Cancel Delete</a>
+  <a href="#" class="confirmDeleteCard hidden">Confirm Delete</a>
+</div>
