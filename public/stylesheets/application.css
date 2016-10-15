@@ -237,6 +237,8 @@ aside .container {
   box-sizing: border-box;
   left: 50%;
   margin-left: -275px;
+  max-height: 85vh;
+  overflow: scroll;
   padding: 20px 15px;
   position: absolute;
   top: 60px;
