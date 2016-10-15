@@ -38,8 +38,11 @@ header
   background-color: colors.header_bg
   color: colors.heading_text
   padding: 8px
-  position: relative
+  position: fixed
+  width: 100vw
+  height: 25px
   text-align: center
+  z-index: 2
 
   .searchWrapper
     float: left
@@ -71,7 +74,6 @@ header
     position: absolute
     top: 40px
     width: 300px
-    z-index: 2
 
     li
       card()
@@ -83,7 +85,11 @@ header
 
 main
   background-color: colors.body_bg
-  height: 100%
+  box-sizing: border-box
+  height: 100vh
+  padding-top: 40px
+  overflow-y: hidden
+  white-space: nowrap
 
   section:last-child
     background-color: colors.secondary_bg
@@ -100,10 +106,12 @@ main
 section
   background-color: colors.list_bg
   border-radius: 5px
-  float: left
+  display: inline-block
   margin: 12px
   padding: 8px
   position: relative
+  vertical-align: top
+  white-space: normal
   width: $section_width
 
   h1
@@ -143,6 +151,10 @@ section
     deleteButton()
     top: 40px
 
+  ul
+    max-height: 77vh
+    overflow: scroll
+
 
 // Card
 // ------------
@@ -181,7 +193,7 @@ aside
   position: fixed
   right: 0
   top: 0
-  z-index: 1
+  z-index: 3
 
   .container
     background-color: colors.cardview_bg
@@ -193,7 +205,6 @@ aside
     position: absolute
     top: 60px
     width: 550px
-    z-index: 2
 
     h1
       font-size: 1.5em
