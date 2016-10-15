@@ -1,21 +1,21 @@
 <a href="#" class="closeCard">Close</a>
 <h1>{{title}}</h1>
-<input class="editCardTitleInput hidden">
+<textarea class="editCardTitleInput hidden"></textarea>
 
 <div class="description">
   <h2><span class="fa fa-align-left" aria-hidden="true"></span>Description</h2><a href="#" class="editDescription fa fa-pencil"></a>
   <p class="descriptionText">{{description}}</p>
-  <input class="editDescriptionInput hidden">
+  <textarea class="editDescriptionInput hidden"></textarea>
 </div>
 
 <h2><span class="fa fa-comment-o" aria-hidden="true"></span>Add a Comment</h2>
-<input class="addCommentInput" name="comment" placeholder="Write a comment...">
+<textarea class="addCommentInput" name="comment" placeholder="Write a comment..."></textarea>
 
 <ul>
   {{#each comments}}
     <li data-index="{{@index}}">
       <p class="comment">{{this.text}}</p>
-      <input class="editCommentInput hidden">
+      <textarea class="editCommentInput hidden"></textarea>
       <p class="commentDate">on {{formatDate this.date}} - <a href="#" class="editComment">Edit</a> - <a href="#" class="deleteComment">Delete</a></p>
     </li>
   {{/each}}
