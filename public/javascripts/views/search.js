@@ -3,7 +3,8 @@ var SearchView = Backbone.View.extend({
   resultTemplate: app.templates.search_result,
 
   events: {
-    'keyup .searchInput': 'search'
+    'keyup .searchInput': 'search',
+    'blur .searchInput': 'closeSearchResults'
   },
 
   search: function() {
@@ -16,6 +17,16 @@ var SearchView = Backbone.View.extend({
     matchingCards.forEach(function(card) {
       $ul.append(this.resultTemplate(card.toJSON()));
     }, this);
+  },
+
+  closeSearchResults: function() {
+    $ul = this.$('ul');
+
+    function close() {
+      $ul.html('');
+    }
+
+    setTimeout(close, 100);
   }
 });
 
