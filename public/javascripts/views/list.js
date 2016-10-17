@@ -14,7 +14,9 @@ var ListView = Backbone.View.extend({
 
     'click .addCard': 'showAddCard',
     'keypress .addCardInput': 'createCardOnEnter',
-    'blur .addCardInput': 'closeAddCard'
+    'blur .addCardInput': 'closeAddCard',
+
+    'sortupdate ul': 'updatePositions'
   },
 
   initialize: function() {
@@ -38,6 +40,12 @@ var ListView = Backbone.View.extend({
     this.$('ul').sortable({
       connectWith: '.sortableCards'
     }).disableSelection();
+  },
+
+  updatePositions: function() {
+    this.$('ul li').each(function(index, li) {
+      $(li).trigger('updatePosition');
+    });
   },
 
   showEditTitle: function() {

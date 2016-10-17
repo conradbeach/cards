@@ -18705,11 +18705,18 @@ var Card = Backbone.Model.extend({
     title: '',
     description: '',
     comments: []
+  },
+
+  initialize: function() {
+    if (!this.get('position')) {
+      this.set('position', this.collection.length + 1);
+    }
   }
 });
 
 var Cards = Backbone.Collection.extend({
   model: Card,
+  comparator: 'position',
 
   initialize: function(listId) {
     this.localStorage = new Backbone.LocalStorage('card-backbone-' + listId);
@@ -18730,7 +18737,9 @@ var SimpleCardView = Backbone.View.extend({
   events: {
     'click .editTitle': 'showEditTitle',
     'keypress .editTitleInput': 'saveTitleOnEnter',
-    'blur .editTitleInput': 'closeEditTitle'
+    'blur .editTitleInput': 'closeEditTitle',
+
+    'updatePosition': 'updatePosition'
   },
 
   initialize: function() {
@@ -18763,6 +18772,11 @@ var SimpleCardView = Backbone.View.extend({
       this.model.save({ title: this.$('.editTitleInput').val() });
       this.render();
     }
+  },
+
+  updatePosition: function() {
+    this.model.set('position', this.$el.index() + 1);
+    this.model.save();
   }
 });
 
@@ -18975,7 +18989,9 @@ var ListView = Backbone.View.extend({
 
     'click .addCard': 'showAddCard',
     'keypress .addCardInput': 'createCardOnEnter',
-    'blur .addCardInput': 'closeAddCard'
+    'blur .addCardInput': 'closeAddCard',
+
+    'sortupdate ul': 'updatePositions'
   },
 
   initialize: function() {
@@ -18999,6 +19015,12 @@ var ListView = Backbone.View.extend({
     this.$('ul').sortable({
       connectWith: '.sortableCards'
     }).disableSelection();
+  },
+
+  updatePositions: function() {
+    this.$('ul li').each(function(index, li) {
+      $(li).trigger('updatePosition');
+    });
   },
 
   showEditTitle: function() {

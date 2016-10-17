@@ -6,7 +6,9 @@ var SimpleCardView = Backbone.View.extend({
   events: {
     'click .editTitle': 'showEditTitle',
     'keypress .editTitleInput': 'saveTitleOnEnter',
-    'blur .editTitleInput': 'closeEditTitle'
+    'blur .editTitleInput': 'closeEditTitle',
+
+    'updatePosition': 'updatePosition'
   },
 
   initialize: function() {
@@ -39,5 +41,10 @@ var SimpleCardView = Backbone.View.extend({
       this.model.save({ title: this.$('.editTitleInput').val() });
       this.render();
     }
+  },
+
+  updatePosition: function() {
+    this.model.set('position', this.$el.index() + 1);
+    this.model.save();
   }
 });
