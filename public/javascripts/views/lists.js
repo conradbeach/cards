@@ -42,7 +42,7 @@ var ListsView = Backbone.View.extend({
     var title;
 
     if (event.which === ENTER_KEY) {
-      title = this.$('.addListInput').val().trim();
+      title = this.$('.addListInput').val();
       app.lists.create({ title: title });
     }
   }

@@ -76,7 +76,7 @@ var CardView = Backbone.View.extend({
 
   saveTitleOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('.editCardTitleInput').val().trim() });
+      this.model.save({ title: this.$('.editCardTitleInput').val() });
     }
   },
 

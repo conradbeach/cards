@@ -19,7 +19,7 @@ var ListView = Backbone.View.extend({
 
   initialize: function() {
     this.listenTo(this.model.cards, 'add remove', this.render);
-    this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'sync', this.render);
     this.listenTo(this.model, 'destroy', this.remove);
     this.delegateEvents();
 
@@ -50,7 +50,7 @@ var ListView = Backbone.View.extend({
 
   saveTitleOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('.editListTitleInput').val().trim() });
+      this.model.save({ title: this.$('.editListTitleInput').val() });
     }
   },
 
@@ -68,7 +68,7 @@ var ListView = Backbone.View.extend({
 
   createCardOnEnter: function(event) {
     if (event.which === ENTER_KEY) {
-      var title = this.$('.addCardInput').val().trim();
+      var title = this.$('.addCardInput').val();
 
       this.model.cards.create({ title: title });
     }
