@@ -23,6 +23,7 @@ textarea
   border-radius: 3px
   color: inherit
   font-size: 1.2em
+  height: 5em
   padding: 4px 6px
   resize: none
   width: 100%
@@ -157,7 +158,7 @@ section
     top: 40px
 
   ul
-    max-height: 77vh
+    max-height: 72vh
     overflow: scroll
 
 
@@ -217,6 +218,12 @@ aside
       font-size: 1.5em
       font-weight: bold
       margin-bottom: 5px
+
+      &:hover
+        cursor: pointer
+
+    .editCardTitleInput
+      width: 90%
 
     .closeCard
       closeButton()
@@ -287,3 +294,12 @@ aside
     .confirmDeleteCard
       deleteButton()
       left: 350px
+
+
+// Media Queries
+// -------------
+
+@media (max-height: 700px)
+  section
+    ul
+      max-height: 65vh
