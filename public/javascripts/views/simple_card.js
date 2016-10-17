@@ -8,7 +8,7 @@ var SimpleCardView = Backbone.View.extend({
     'keypress .editTitleInput': 'saveTitleOnEnter',
     'blur .editTitleInput': 'closeEditTitle',
 
-    'updatePosition': 'updatePosition'
+    'updateCardPosition': 'updatePosition'
   },
 
   initialize: function() {

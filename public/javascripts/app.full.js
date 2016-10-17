@@ -18739,7 +18739,7 @@ var SimpleCardView = Backbone.View.extend({
     'keypress .editTitleInput': 'saveTitleOnEnter',
     'blur .editTitleInput': 'closeEditTitle',
 
-    'updatePosition': 'updatePosition'
+    'updateCardPosition': 'updatePosition'
   },
 
   initialize: function() {
@@ -18957,6 +18957,10 @@ var List = Backbone.Model.extend({
   initialize: function() {
     this.save();
 
+    if (!this.get('position')) {
+      this.set('position', this.collection.length + 1);
+    }
+
     this.cards = new Cards(this.id);
     this.cards.fetch();
   }
@@ -18965,6 +18969,7 @@ var List = Backbone.Model.extend({
 var Lists = Backbone.Collection.extend({
   model: List,
   localStorage: new Backbone.LocalStorage('lists-backbone'),
+  comparator: 'position',
 
   initialize: function() {
     this.fetch();
@@ -18991,7 +18996,8 @@ var ListView = Backbone.View.extend({
     'keypress .addCardInput': 'createCardOnEnter',
     'blur .addCardInput': 'closeAddCard',
 
-    'sortupdate ul': 'updatePositions'
+    'sortupdate ul': 'updateCardPositions',
+    'updateListPosition': 'updatePosition'
   },
 
   initialize: function() {
@@ -19017,10 +19023,17 @@ var ListView = Backbone.View.extend({
     }).disableSelection();
   },
 
-  updatePositions: function() {
-    this.$('ul li').each(function(index, li) {
-      $(li).trigger('updatePosition');
+  updateCardPositions: function(event) {
+    event.stopImmediatePropagation();
+
+    this.$('ul li').each(function(index, card) {
+      $(card).trigger('updateCardPosition');
     });
+  },
+
+  updatePosition: function() {
+    this.model.set('position', this.$el.index() + 1);
+    this.model.save();
   },
 
   showEditTitle: function() {
@@ -19091,7 +19104,9 @@ var ListsView = Backbone.View.extend({
   events: {
     'click .addList': 'showAddList',
     'keypress .addListInput': 'createListOnEnter',
-    'blur .addListInput': 'closeAddList'
+    'blur .addListInput': 'closeAddList',
+
+    'sortupdate': 'updateListPositions'
   },
 
   initialize: function() {
@@ -19114,6 +19129,12 @@ var ListsView = Backbone.View.extend({
     }, this);
 
     this.$el.append(this.newListTemplate());
+  },
+
+  updateListPositions: function() {
+    this.$('section').each(function(index, list) {
+      $(list).trigger('updateListPosition');
+    })
   },
 
   showAddList: function(event) {

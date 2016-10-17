@@ -5,7 +5,9 @@ var ListsView = Backbone.View.extend({
   events: {
     'click .addList': 'showAddList',
     'keypress .addListInput': 'createListOnEnter',
-    'blur .addListInput': 'closeAddList'
+    'blur .addListInput': 'closeAddList',
+
+    'sortupdate': 'updateListPositions'
   },
 
   initialize: function() {
@@ -28,6 +30,12 @@ var ListsView = Backbone.View.extend({
     }, this);
 
     this.$el.append(this.newListTemplate());
+  },
+
+  updateListPositions: function() {
+    this.$('section').each(function(index, list) {
+      $(list).trigger('updateListPosition');
+    })
   },
 
   showAddList: function(event) {
