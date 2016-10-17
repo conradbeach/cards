@@ -19,7 +19,7 @@ a
 textarea
   background-color: inherit
   box-sizing: border-box
-  border: 1px solid colors.box_shadow
+  border: 1px solid colors.shadow
   border-radius: 3px
   color: inherit
   font-size: 1.2em
@@ -36,7 +36,7 @@ textarea
 
 header
   background-color: colors.header_bg
-  color: colors.heading_text
+  color: colors.off_white_text
   padding: 8px
   position: fixed
   width: 100vw
@@ -54,7 +54,7 @@ header
       background-color: colors.search_bg
       border: 0
       border-radius: 3px
-      color: colors.search_text
+      color: colors.white_text
       font-size: 1em
       height: 25px
       padding: 0 8px
@@ -86,7 +86,7 @@ header
 // ------------
 
 main
-  background-color: colors.body_bg
+  background-color: colors.main_bg
   box-sizing: border-box
   height: 100vh
   padding-top: 40px
@@ -97,10 +97,10 @@ main
     background-color: colors.secondary_bg
 
     .addListInput
-      color: colors.heading_text
+      color: colors.off_white_text
 
     a
-      color: colors.heading_text
+      color: colors.off_white_text
       font-size: 1em
       margin: 0
 
@@ -172,10 +172,10 @@ section
 
       &:hover
         .editTitle
-          background-color: darken(colors.card_bg, 5)
           display: block
 
       .editTitle
+        background-color: darken(colors.card_bg, 5)
         border-radius: 3px
         color: colors.secondary_text
         display: none

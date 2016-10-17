@@ -5,17 +5,17 @@ $section_width = 250px
 
 colors = {
   header_bg: #005c99,
-  body_bg: #0079bf,
+  main_bg: #0079bf,
   search_bg: #4389b7,
   secondary_bg: #0061a1,
   list_bg: #dee0e2,
   card_bg: #ffffff,
   cardview_bg: #eaecee,
-  heading_text: #f5f4f5,
-  search_text: #ffffff,
+  off_white_text: #f5f4f5,
+  white_text: #ffffff,
   primary_text: #4d4d4d,
   secondary_text: #808080,
-  box_shadow: #aaaaaa,
+  shadow: #aaaaaa,
   delete_bg: #e95b4b,
   delete_shadow: #ae4736,
   green_bg: #00bf8f,
@@ -25,7 +25,7 @@ colors = {
 card()
   background-color: colors.card_bg
   border-radius: 3px
-  box-shadow: 0 1px 1px 1px colors.box_shadow
+  box-shadow: 0 1px 1px 1px colors.shadow
   margin: 8px 0
   padding: 8px
   position: relative
@@ -35,7 +35,7 @@ card()
 
 button()
   border-radius: 5px
-  color: colors.search_text
+  color: colors.white_text
   padding: 10px
   text-align: center
 
