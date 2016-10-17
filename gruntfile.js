@@ -13,6 +13,7 @@ function removeWhitespace(template) {
 
 module.exports = function Grunt(grunt) {
   var sources = ['public/javascripts/vendor/bower.js',
+                 'public/javascripts/vendor/jquery-ui.min.js',
                  'public/javascripts/vendor/backbone.localStorage.js',
                  'public/javascripts/handlebars_templates.js',
                  'public/javascripts/app.js',

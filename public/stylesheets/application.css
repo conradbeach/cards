@@ -1,4 +1,6 @@
 @import 'reset.css';
+@import 'jquery-ui.min.css';
+@import 'jquery-ui.structure.min.css';
 body {
   color: #4d4d4d;
   font-family: 'Open Sans', sans-serif;
