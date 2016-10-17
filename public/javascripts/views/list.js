@@ -34,6 +34,10 @@ var ListView = Backbone.View.extend({
 
       this.$('ul').append(view.$el);
     }, this);
+
+    this.$('ul').sortable({
+      connectWith: '.sortableCards'
+    }).disableSelection();
   },
 
   showEditTitle: function() {

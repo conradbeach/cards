@@ -11,6 +11,10 @@ var ListsView = Backbone.View.extend({
   initialize: function() {
     this.listenTo(app.lists, 'add remove', this.render);
 
+    this.$el.sortable({
+      items: 'section:not(.noSort)'
+    }).disableSelection();
+
     this.render();
   },
 

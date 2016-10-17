@@ -18598,11 +18598,11 @@ this["JST"]["list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":func
 
   return "<a href=\"#\" class=\"deleteList\">Delete</a><a href=\"#\" class=\"cancelDeleteList hidden\">Cancel Delete</a><a href=\"#\" class=\"confirmDeleteList hidden\">Confirm Delete</a><h1>"
     + container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"title","hash":{},"data":data}) : helper)))
-    + "</h1><textarea class=\"editListTitleInput hidden\"></textarea><ul></ul><a href=\"#\" class=\"addCard\">Add a card...</a><textarea class=\"addCardInput hidden\"></textarea>";
+    + "</h1><textarea class=\"editListTitleInput hidden\"></textarea><ul class=\"sortableCards\"></ul><a href=\"#\" class=\"addCard\">Add a card...</a><textarea class=\"addCardInput hidden\"></textarea>";
 },"useData":true});
 
 this["JST"]["new_list"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<section><a href=\"#\" class=\"addList\">Add a list...</a><textarea class=\"addListInput hidden\"></textarea></section>";
+    return "<section class=\"noSort\"><a href=\"#\" class=\"addList\">Add a list...</a><textarea class=\"addListInput hidden\"></textarea></section>";
 },"useData":true});
 
 this["JST"]["search_result"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -18995,6 +18995,10 @@ var ListView = Backbone.View.extend({
 
       this.$('ul').append(view.$el);
     }, this);
+
+    this.$('ul').sortable({
+      connectWith: '.sortableCards'
+    }).disableSelection();
   },
 
   showEditTitle: function() {
@@ -19070,6 +19074,10 @@ var ListsView = Backbone.View.extend({
 
   initialize: function() {
     this.listenTo(app.lists, 'add remove', this.render);
+
+    this.$el.sortable({
+      items: 'section:not(.noSort)'
+    }).disableSelection();
 
     this.render();
   },
