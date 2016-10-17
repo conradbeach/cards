@@ -8,7 +8,7 @@ describe('CardView', function() {
 
     this.$h1 = this.view.$('h1');
     this.$editCardTitleInput = this.view.$('.editCardTitleInput');
-    this.$description = this.view.$('.description');
+    this.$descriptionText = this.view.$('.descriptionText');
     this.$editDescriptionInput = this.view.$('.editDescriptionInput');
     this.$addCommentInput = this.view.$('.addCommentInput');
   });
@@ -41,12 +41,12 @@ describe('CardView', function() {
   });
 
   it('shows the edit description input', function() {
-    expect(this.$description).not.toHaveClass('hidden');
+    expect(this.$descriptionText).not.toHaveClass('hidden');
     expect(this.$editDescriptionInput).toHaveClass('hidden');
 
     this.view.showEditDescription(new Event(null));
 
-    expect(this.$description).toHaveClass('hidden');
+    expect(this.$descriptionText).toHaveClass('hidden');
     expect(this.$editDescriptionInput).not.toHaveClass('hidden');
     expect(this.$editDescriptionInput.val()).toEqual(this.model.get('description'));
   });
@@ -78,18 +78,11 @@ describe('CardView', function() {
     expect(this.model.get('comments').pop().text).toEqual('New Comment');
   });
 
-  it('closes the card', function() {
-    var spy = spyOn(this.view, 'remove');
-
-    this.view.closeCard();
-
-    expect(spy).toHaveBeenCalled();
-  });
-
   it('destroys the card', function() {
     var spy = spyOn(this.model, 'destroy');
 
-    this.view.deleteCard();
+    app.showCard(this.view.model.get('id'));
+    this.view.deleteCard(new Event(null));
 
     expect(spy).toHaveBeenCalled();
   });
