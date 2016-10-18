@@ -20,9 +20,9 @@ a
 
 textarea
   background-color: inherit
-  box-sizing: border-box
   border: 1px solid colors.shadow
   border-radius: 3px
+  box-sizing: border-box
   color: inherit
   font-size: 1.2em
   height: 5em
@@ -41,11 +41,11 @@ textarea
 header
   background-color: colors.header_bg
   color: colors.off_white_text
+  height: 25px
   padding: 8px
   position: fixed
-  width: 100vw
-  height: 25px
   text-align: center
+  width: 100vw
   z-index: 2
 
   .searchWrapper
@@ -93,8 +93,8 @@ main
   background-color: colors.main_bg
   box-sizing: border-box
   height: 100vh
-  padding-top: 40px
   overflow-y: hidden
+  padding-top: 40px
   white-space: nowrap
 
   section:last-child
@@ -105,8 +105,8 @@ main
 
     a
       color: colors.off_white_text
-      font-size: 1em
-      margin: 0
+      display: inline-block
+      width: 100%
 
 
 // List
@@ -124,8 +124,8 @@ section
   width: $section_width
 
   h1
-    font-weight: bold
     font-size: 1.25em
+    font-weight: bold
     margin-bottom: 7px
 
     &:hover
@@ -177,6 +177,7 @@ section
 
       &:hover
         .editTitle
+          cursor: pointer
           display: block
 
       .editTitle

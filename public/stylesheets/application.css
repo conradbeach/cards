@@ -14,9 +14,9 @@ a {
 }
 textarea {
   background-color: inherit;
-  box-sizing: border-box;
   border: 1px solid #aaa;
   border-radius: 3px;
+  box-sizing: border-box;
   color: inherit;
   font-size: 1.2em;
   height: 5em;
@@ -31,11 +31,11 @@ textarea:focus {
 header {
   background-color: #005c99;
   color: #f5f4f5;
+  height: 25px;
   padding: 8px;
   position: fixed;
-  width: 100vw;
-  height: 25px;
   text-align: center;
+  width: 100vw;
   z-index: 2;
 }
 header .searchWrapper {
@@ -80,6 +80,10 @@ header ul li {
   position: relative;
   margin: 8px;
 }
+header ul li a {
+  display: inline-block;
+  width: 100%;
+}
 header ul li:hover {
   background-color: #f2f2f2;
 }
@@ -87,8 +91,8 @@ main {
   background-color: #0079bf;
   box-sizing: border-box;
   height: 100vh;
-  padding-top: 40px;
   overflow-y: hidden;
+  padding-top: 40px;
   white-space: nowrap;
 }
 main section:last-child {
@@ -99,8 +103,8 @@ main section:last-child .addListInput {
 }
 main section:last-child a {
   color: #f5f4f5;
-  font-size: 1em;
-  margin: 0;
+  display: inline-block;
+  width: 100%;
 }
 section {
   background-color: #dee0e2;
@@ -114,8 +118,8 @@ section {
   width: 250px;
 }
 section h1 {
-  font-weight: bold;
   font-size: 1.25em;
+  font-weight: bold;
   margin-bottom: 7px;
 }
 section h1:hover {
@@ -207,10 +211,15 @@ section ul li {
   position: relative;
   line-height: 1.25em;
 }
+section ul li a {
+  display: inline-block;
+  width: 100%;
+}
 section ul li:hover {
   background-color: #f2f2f2;
 }
 section ul li:hover .editTitle {
+  cursor: pointer;
   display: block;
 }
 section ul li .editTitle {
@@ -325,6 +334,10 @@ aside .container .comment {
   padding: 8px;
   position: relative;
   margin-top: 12px;
+}
+aside .container .comment a {
+  display: inline-block;
+  width: 100%;
 }
 aside .container .comment:hover {
   background-color: #f2f2f2;
