@@ -18739,7 +18739,8 @@ var SimpleCardView = Backbone.View.extend({
     'keypress .editTitleInput': 'saveTitleOnEnter',
     'blur .editTitleInput': 'closeEditTitle',
 
-    'updateCardPosition': 'updatePosition'
+    'updateCardPosition': 'updatePosition',
+    'transferCardTo': 'transferCardTo'
   },
 
   initialize: function() {
@@ -18777,6 +18778,11 @@ var SimpleCardView = Backbone.View.extend({
   updatePosition: function() {
     this.model.set('position', this.$el.index() + 1);
     this.model.save();
+  },
+
+  transferCardTo: function(event, toCollection) {
+    toCollection.create(this.model.toJSON());
+    this.model.destroy();
   }
 });
 
@@ -18997,7 +19003,9 @@ var ListView = Backbone.View.extend({
     'blur .addCardInput': 'closeAddCard',
 
     'sortupdate ul': 'updateCardPositions',
-    'updateListPosition': 'updatePosition'
+    'updateListPosition': 'updatePosition',
+
+    'sortreceive ul': 'receiveCard'
   },
 
   initialize: function() {
@@ -19024,7 +19032,7 @@ var ListView = Backbone.View.extend({
   },
 
   updateCardPositions: function(event) {
-    event.stopImmediatePropagation();
+    if (event) { event.stopImmediatePropagation(); }
 
     this.$('ul li').each(function(index, card) {
       $(card).trigger('updateCardPosition');
@@ -19034,6 +19042,11 @@ var ListView = Backbone.View.extend({
   updatePosition: function() {
     this.model.set('position', this.$el.index() + 1);
     this.model.save();
+  },
+
+  receiveCard: function(event, ui) {
+    this.updateCardPositions();
+    ui.item.trigger('transferCardTo', this.model.cards);
   },
 
   showEditTitle: function() {
@@ -19134,7 +19147,7 @@ var ListsView = Backbone.View.extend({
   updateListPositions: function() {
     this.$('section').each(function(index, list) {
       $(list).trigger('updateListPosition');
-    })
+    });
   },
 
   showAddList: function(event) {

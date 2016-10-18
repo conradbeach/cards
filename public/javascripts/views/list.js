@@ -17,7 +17,9 @@ var ListView = Backbone.View.extend({
     'blur .addCardInput': 'closeAddCard',
 
     'sortupdate ul': 'updateCardPositions',
-    'updateListPosition': 'updatePosition'
+    'updateListPosition': 'updatePosition',
+
+    'sortreceive ul': 'receiveCard'
   },
 
   initialize: function() {
@@ -44,7 +46,7 @@ var ListView = Backbone.View.extend({
   },
 
   updateCardPositions: function(event) {
-    event.stopImmediatePropagation();
+    if (event) { event.stopImmediatePropagation(); }
 
     this.$('ul li').each(function(index, card) {
       $(card).trigger('updateCardPosition');
@@ -54,6 +56,11 @@ var ListView = Backbone.View.extend({
   updatePosition: function() {
     this.model.set('position', this.$el.index() + 1);
     this.model.save();
+  },
+
+  receiveCard: function(event, ui) {
+    this.updateCardPositions();
+    ui.item.trigger('transferCardTo', this.model.cards);
   },
 
   showEditTitle: function() {

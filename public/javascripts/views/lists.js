@@ -35,7 +35,7 @@ var ListsView = Backbone.View.extend({
   updateListPositions: function() {
     this.$('section').each(function(index, list) {
       $(list).trigger('updateListPosition');
-    })
+    });
   },
 
   showAddList: function(event) {
