@@ -60,7 +60,7 @@ var ListView = Backbone.View.extend({
 
   receiveCard: function(event, ui) {
     this.updateCardPositions();
-    ui.item.trigger('transferCardTo', this.model.cards);
+    ui.item.trigger('transferCardTo', { collection: this.model.cards });
   },
 
   showEditTitle: function() {

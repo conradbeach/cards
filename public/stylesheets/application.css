@@ -195,6 +195,7 @@ section .confirmDeleteList:hover {
 }
 section ul {
   max-height: 72vh;
+  min-height: 25px;
   overflow: scroll;
 }
 section ul li {

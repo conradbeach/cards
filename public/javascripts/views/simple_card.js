@@ -49,8 +49,8 @@ var SimpleCardView = Backbone.View.extend({
     this.model.save();
   },
 
-  transferCardTo: function(event, toCollection) {
-    toCollection.create(this.model.toJSON());
+  transferCardTo: function(event, options) {
+    options.collection.create(this.model.toJSON());
     this.model.destroy();
   }
 });
