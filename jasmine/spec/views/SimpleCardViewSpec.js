@@ -1,5 +1,6 @@
 describe('SimpleCardView', function() {
   beforeEach(function() {
+    this.seed();
     this.view = new SimpleCardView({ model: app.lists.first().cards.first() });
 
     this.$title = this.view.$('.title');

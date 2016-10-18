@@ -34,15 +34,4 @@ describe('app', function() {
     expect($('aside')).not.toHaveClass('hidden');
     expect($('aside').html()).not.toEqual('');
   });
-
-  it('closes a card', function() {
-    var card = app.lists.first().cards.first();
-    var id = card.get('id');
-
-    app.showCard(id);
-    app.closeCard();
-
-    expect(app.currentCardView).toBeUndefined();
-    expect($('aside')).toHaveClass('hidden');
-  });
 });
