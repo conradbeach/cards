@@ -1,9 +1,14 @@
 var Router = Backbone.Router.extend({
   routes: {
-    ':id': 'default'
+    '': 'default',
+    ':id': 'showCard'
   },
 
-  default: function(id) {
+  default: function() {
+    app.removeCurrentCardView();
+  },
+
+  showCard: function(id) {
     app.showCard(id);
   }
 });

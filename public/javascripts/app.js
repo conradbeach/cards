@@ -39,10 +39,15 @@ var app = {
   },
 
   closeCard: function() {
-    this.currentCardView.remove();
-    delete this.currentCardView;
-    $('aside').addClass('hidden');
     this.router.navigate('#', { trigger: true });
+  },
+
+  removeCurrentCardView: function() {
+    if (this.currentCardView) {
+      this.currentCardView.remove();
+      delete this.currentCardView;
+      $('aside').addClass('hidden');
+    }
   },
 
   search: function(query) {

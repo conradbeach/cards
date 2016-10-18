@@ -18665,10 +18665,15 @@ var app = {
   },
 
   closeCard: function() {
-    this.currentCardView.remove();
-    delete this.currentCardView;
-    $('aside').addClass('hidden');
     this.router.navigate('#', { trigger: true });
+  },
+
+  removeCurrentCardView: function() {
+    if (this.currentCardView) {
+      this.currentCardView.remove();
+      delete this.currentCardView;
+      $('aside').addClass('hidden');
+    }
   },
 
   search: function(query) {
@@ -19210,10 +19215,15 @@ app.searchView = new SearchView();
 
 var Router = Backbone.Router.extend({
   routes: {
-    ':id': 'default'
+    '': 'default',
+    ':id': 'showCard'
   },
 
-  default: function(id) {
+  default: function() {
+    app.removeCurrentCardView();
+  },
+
+  showCard: function(id) {
     app.showCard(id);
   }
 });
