@@ -87,6 +87,9 @@ header ul li a {
 header ul li:hover {
   background-color: #f2f2f2;
 }
+header ul:empty {
+  display: none;
+}
 main {
   background-color: #0079bf;
   box-sizing: border-box;
