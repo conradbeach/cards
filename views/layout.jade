@@ -10,19 +10,7 @@ html
     +remote_stylesheet_link_tag('https://fonts.googleapis.com/css?family=Pacifico')
     
   body
-    header
-      div(class="searchWrapper")
-        span(class="fa fa-search" aria-hidden="true")
-        input.searchInput
-        
-      span(class="logo") Cards
-      
-      ul
-  
-    main
-      block content
-     
-    aside(class="hidden")
+    block content
   
     +javascript_include_tag('vendor/bower')
     +javascript_include_tag('vendor/jquery-ui.min')
