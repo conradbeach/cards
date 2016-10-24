@@ -13,7 +13,7 @@
 
 <ul>
   {{#each comments}}
-    <li data-index="{{@index}}">
+    <li>
       <p class="comment">{{this.text}}</p>
       <textarea class="editCommentInput hidden"></textarea>
       <p class="commentDate">on {{formatDate this.date}} - <a href="#" class="editComment">Edit</a> - <a href="#" class="deleteComment">Delete</a></p>

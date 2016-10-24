@@ -1,14 +1,12 @@
 this["JST"] = this["JST"] || {};
 
 this["JST"]["card"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3=container.escapeExpression;
+    var alias1=container.escapeExpression;
 
-  return "<li data-index=\""
-    + alias3(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : alias2),(typeof helper === "function" ? helper.call(alias1,{"name":"index","hash":{},"data":data}) : helper)))
-    + "\"><p class=\"comment\">"
-    + alias3(container.lambda((depth0 != null ? depth0.text : depth0), depth0))
+  return "<li><p class=\"comment\">"
+    + alias1(container.lambda((depth0 != null ? depth0.text : depth0), depth0))
     + "</p><textarea class=\"editCommentInput hidden\"></textarea><p class=\"commentDate\">on "
-    + alias3((helpers.formatDate || (depth0 && depth0.formatDate) || alias2).call(alias1,(depth0 != null ? depth0.date : depth0),{"name":"formatDate","hash":{},"data":data}))
+    + alias1((helpers.formatDate || (depth0 && depth0.formatDate) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.date : depth0),{"name":"formatDate","hash":{},"data":data}))
     + " - <a href=\"#\" class=\"editComment\">Edit</a> - <a href=\"#\" class=\"deleteComment\">Delete</a></p></li>";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;

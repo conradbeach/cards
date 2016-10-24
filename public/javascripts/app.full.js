@@ -18572,14 +18572,12 @@ return Backbone.LocalStorage;
 this["JST"] = this["JST"] || {};
 
 this["JST"]["card"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3=container.escapeExpression;
+    var alias1=container.escapeExpression;
 
-  return "<li data-index=\""
-    + alias3(((helper = (helper = helpers.index || (data && data.index)) != null ? helper : alias2),(typeof helper === "function" ? helper.call(alias1,{"name":"index","hash":{},"data":data}) : helper)))
-    + "\"><p class=\"comment\">"
-    + alias3(container.lambda((depth0 != null ? depth0.text : depth0), depth0))
+  return "<li><p class=\"comment\">"
+    + alias1(container.lambda((depth0 != null ? depth0.text : depth0), depth0))
     + "</p><textarea class=\"editCommentInput hidden\"></textarea><p class=\"commentDate\">on "
-    + alias3((helpers.formatDate || (depth0 && depth0.formatDate) || alias2).call(alias1,(depth0 != null ? depth0.date : depth0),{"name":"formatDate","hash":{},"data":data}))
+    + alias1((helpers.formatDate || (depth0 && depth0.formatDate) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.date : depth0),{"name":"formatDate","hash":{},"data":data}))
     + " - <a href=\"#\" class=\"editComment\">Edit</a> - <a href=\"#\" class=\"deleteComment\">Delete</a></p></li>";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
@@ -18749,7 +18747,7 @@ var SimpleCardView = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'sync', this.render);
     this.listenTo(this.model, 'destroy', this.remove);
 
     this.render();
@@ -18764,8 +18762,8 @@ var SimpleCardView = Backbone.View.extend({
 
     this.$('.title').addClass('hidden');
     this.$('.editTitleInput').removeClass('hidden')
-                   .focus()
-                   .val(this.model.get('title'));
+                             .val(this.model.get('title'))
+                             .focus();
   },
 
   closeEditTitle: function() {
@@ -18774,9 +18772,12 @@ var SimpleCardView = Backbone.View.extend({
   },
 
   saveTitleOnEnter: function(event) {
+    var title;
+
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('.editTitleInput').val() });
-      this.render();
+      title = this.$('.editTitleInput').val();
+
+      this.model.save({ title: title });
     }
   },
 
@@ -18868,8 +18869,12 @@ var CardView = Backbone.View.extend({
   },
 
   saveTitleOnEnter: function(event) {
+    var title;
+
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('.editCardTitleInput').val() });
+      title = this.$('.editCardTitleInput').val();
+
+      this.model.save({ title: title });
     }
   },
 
@@ -18916,7 +18921,7 @@ var CardView = Backbone.View.extend({
     event.preventDefault();
 
     var $parentLi = this.getCommentParent(event);
-    var index = $parentLi.data('index');
+    var index = $parentLi.index();
 
     $parentLi.find('.comment').addClass('hidden');
     $parentLi.find('.editCommentInput').removeClass('hidden')
@@ -18935,7 +18940,7 @@ var CardView = Backbone.View.extend({
     if (event.which === ENTER_KEY) {
       var $parentLi = this.getCommentParent(event);
       var text = $parentLi.find('.editCommentInput').val();
-      var index = $parentLi.data('index');
+      var index = $parentLi.index();
 
       var comments = this.model.get('comments');
       var comment = comments[index];
@@ -18950,7 +18955,7 @@ var CardView = Backbone.View.extend({
   deleteComment: function(event) {
     event.preventDefault();
 
-    var index = this.getCommentParent(event).data('index');
+    var index = this.getCommentParent(event).index();
     var comments = this.model.get('comments');
 
     comments.splice(index, 1);
@@ -18966,7 +18971,8 @@ var List = Backbone.Model.extend({
   },
 
   initialize: function() {
-    this.save();
+    this.save(); // Save List first so it has an ID to pass to the new Cards
+                 // collection on line 14. Otherwise, undefined is passed.
 
     if (!this.get('position')) {
       this.set('position', this.collection.length + 1);
@@ -18996,16 +19002,16 @@ var ListView = Backbone.View.extend({
 
   events: {
     'click h1': 'showEditTitle',
-    'keypress .editListTitleInput': 'saveTitleOnEnter',
     'blur .editListTitleInput': 'closeEditTitle',
+    'keypress .editListTitleInput': 'saveTitleOnEnter',
 
     'click .deleteList': 'askDeleteList',
-    'click .confirmDeleteList': 'deleteList',
     'click .cancelDeleteList': 'cancelDeleteList',
+    'click .confirmDeleteList': 'deleteList',
 
     'click .addCard': 'showAddCard',
-    'keypress .addCardInput': 'createCardOnEnter',
     'blur .addCardInput': 'closeAddCard',
+    'keypress .addCardInput': 'createCardOnEnter',
 
     'sortupdate ul': 'updateCardPositions',
     'updateListPosition': 'updatePosition',
@@ -19036,24 +19042,6 @@ var ListView = Backbone.View.extend({
     }).disableSelection();
   },
 
-  updateCardPositions: function(event) {
-    if (event) { event.stopImmediatePropagation(); }
-
-    this.$('ul li').each(function(index, card) {
-      $(card).trigger('updateCardPosition');
-    });
-  },
-
-  updatePosition: function() {
-    this.model.set('position', this.$el.index() + 1);
-    this.model.save();
-  },
-
-  receiveCard: function(event, ui) {
-    this.updateCardPositions();
-    ui.item.trigger('transferCardTo', { collection: this.model.cards });
-  },
-
   showEditTitle: function() {
     this.$('h1').addClass('hidden');
     this.$('.editListTitleInput').removeClass('hidden')
@@ -19067,28 +19055,12 @@ var ListView = Backbone.View.extend({
   },
 
   saveTitleOnEnter: function(event) {
+    var title;
+
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('.editListTitleInput').val() });
-    }
-  },
+      title = this.$('.editListTitleInput').val();
 
-  showAddCard: function(event) {
-    event.preventDefault();
-
-    this.$('.addCard').addClass('hidden');
-    this.$('.addCardInput').removeClass('hidden').focus();
-  },
-
-  closeAddCard: function() {
-    this.$('.addCard').removeClass('hidden');
-    this.$('.addCardInput').val('').addClass('hidden');
-  },
-
-  createCardOnEnter: function(event) {
-    if (event.which === ENTER_KEY) {
-      var title = this.$('.addCardInput').val();
-
-      this.model.cards.create({ title: title });
+      this.model.save({ title: title });
     }
   },
 
@@ -19112,6 +19084,48 @@ var ListView = Backbone.View.extend({
 
     this.model.cards.destroyAll();
     this.model.destroy();
+  },
+
+  showAddCard: function(event) {
+    event.preventDefault();
+
+    this.$('.addCard').addClass('hidden');
+    this.$('.addCardInput').removeClass('hidden').focus();
+  },
+
+  closeAddCard: function() {
+    this.$('.addCard').removeClass('hidden');
+    this.$('.addCardInput').val('').addClass('hidden');
+  },
+
+  createCardOnEnter: function(event) {
+    var title;
+
+    if (event.which === ENTER_KEY) {
+      title = this.$('.addCardInput').val();
+
+      this.model.cards.create({ title: title });
+    }
+  },
+
+  updateCardPositions: function(event) {
+    if (event) { event.stopImmediatePropagation(); }
+
+    this.$('ul li').each(function(index, card) {
+      $(card).trigger('updateCardPosition');
+    });
+
+    this.model.cards.sort();
+  },
+
+  updatePosition: function() {
+    this.model.set('position', this.$el.index() + 1);
+    this.model.save();
+  },
+
+  receiveCard: function(event, ui) {
+    this.updateCardPositions();
+    ui.item.trigger('transferCardTo', { collection: this.model.cards });
   }
 });
 
@@ -19121,8 +19135,8 @@ var ListsView = Backbone.View.extend({
 
   events: {
     'click .addList': 'showAddList',
-    'keypress .addListInput': 'createListOnEnter',
     'blur .addListInput': 'closeAddList',
+    'keypress .addListInput': 'createListOnEnter',
 
     'sortupdate': 'updateListPositions'
   },
@@ -19149,12 +19163,6 @@ var ListsView = Backbone.View.extend({
     this.$el.append(this.newListTemplate());
   },
 
-  updateListPositions: function() {
-    this.$('section').each(function(index, list) {
-      $(list).trigger('updateListPosition');
-    });
-  },
-
   showAddList: function(event) {
     event.preventDefault();
 
@@ -19172,8 +19180,15 @@ var ListsView = Backbone.View.extend({
 
     if (event.which === ENTER_KEY) {
       title = this.$('.addListInput').val();
+      
       app.lists.create({ title: title });
     }
+  },
+
+  updateListPositions: function() {
+    this.$('section').each(function(index, list) {
+      $(list).trigger('updateListPosition');
+    });
   }
 });
 

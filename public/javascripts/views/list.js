@@ -5,16 +5,16 @@ var ListView = Backbone.View.extend({
 
   events: {
     'click h1': 'showEditTitle',
-    'keypress .editListTitleInput': 'saveTitleOnEnter',
     'blur .editListTitleInput': 'closeEditTitle',
+    'keypress .editListTitleInput': 'saveTitleOnEnter',
 
     'click .deleteList': 'askDeleteList',
-    'click .confirmDeleteList': 'deleteList',
     'click .cancelDeleteList': 'cancelDeleteList',
+    'click .confirmDeleteList': 'deleteList',
 
     'click .addCard': 'showAddCard',
-    'keypress .addCardInput': 'createCardOnEnter',
     'blur .addCardInput': 'closeAddCard',
+    'keypress .addCardInput': 'createCardOnEnter',
 
     'sortupdate ul': 'updateCardPositions',
     'updateListPosition': 'updatePosition',
@@ -45,24 +45,6 @@ var ListView = Backbone.View.extend({
     }).disableSelection();
   },
 
-  updateCardPositions: function(event) {
-    if (event) { event.stopImmediatePropagation(); }
-
-    this.$('ul li').each(function(index, card) {
-      $(card).trigger('updateCardPosition');
-    });
-  },
-
-  updatePosition: function() {
-    this.model.set('position', this.$el.index() + 1);
-    this.model.save();
-  },
-
-  receiveCard: function(event, ui) {
-    this.updateCardPositions();
-    ui.item.trigger('transferCardTo', { collection: this.model.cards });
-  },
-
   showEditTitle: function() {
     this.$('h1').addClass('hidden');
     this.$('.editListTitleInput').removeClass('hidden')
@@ -76,28 +58,12 @@ var ListView = Backbone.View.extend({
   },
 
   saveTitleOnEnter: function(event) {
+    var title;
+
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('.editListTitleInput').val() });
-    }
-  },
+      title = this.$('.editListTitleInput').val();
 
-  showAddCard: function(event) {
-    event.preventDefault();
-
-    this.$('.addCard').addClass('hidden');
-    this.$('.addCardInput').removeClass('hidden').focus();
-  },
-
-  closeAddCard: function() {
-    this.$('.addCard').removeClass('hidden');
-    this.$('.addCardInput').val('').addClass('hidden');
-  },
-
-  createCardOnEnter: function(event) {
-    if (event.which === ENTER_KEY) {
-      var title = this.$('.addCardInput').val();
-
-      this.model.cards.create({ title: title });
+      this.model.save({ title: title });
     }
   },
 
@@ -121,5 +87,47 @@ var ListView = Backbone.View.extend({
 
     this.model.cards.destroyAll();
     this.model.destroy();
+  },
+
+  showAddCard: function(event) {
+    event.preventDefault();
+
+    this.$('.addCard').addClass('hidden');
+    this.$('.addCardInput').removeClass('hidden').focus();
+  },
+
+  closeAddCard: function() {
+    this.$('.addCard').removeClass('hidden');
+    this.$('.addCardInput').val('').addClass('hidden');
+  },
+
+  createCardOnEnter: function(event) {
+    var title;
+
+    if (event.which === ENTER_KEY) {
+      title = this.$('.addCardInput').val();
+
+      this.model.cards.create({ title: title });
+    }
+  },
+
+  updateCardPositions: function(event) {
+    if (event) { event.stopImmediatePropagation(); }
+
+    this.$('ul li').each(function(index, card) {
+      $(card).trigger('updateCardPosition');
+    });
+
+    this.model.cards.sort();
+  },
+
+  updatePosition: function() {
+    this.model.set('position', this.$el.index() + 1);
+    this.model.save();
+  },
+
+  receiveCard: function(event, ui) {
+    this.updateCardPositions();
+    ui.item.trigger('transferCardTo', { collection: this.model.cards });
   }
 });

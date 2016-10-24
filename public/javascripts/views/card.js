@@ -75,8 +75,12 @@ var CardView = Backbone.View.extend({
   },
 
   saveTitleOnEnter: function(event) {
+    var title;
+
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('.editCardTitleInput').val() });
+      title = this.$('.editCardTitleInput').val();
+
+      this.model.save({ title: title });
     }
   },
 
@@ -123,7 +127,7 @@ var CardView = Backbone.View.extend({
     event.preventDefault();
 
     var $parentLi = this.getCommentParent(event);
-    var index = $parentLi.data('index');
+    var index = $parentLi.index();
 
     $parentLi.find('.comment').addClass('hidden');
     $parentLi.find('.editCommentInput').removeClass('hidden')
@@ -142,7 +146,7 @@ var CardView = Backbone.View.extend({
     if (event.which === ENTER_KEY) {
       var $parentLi = this.getCommentParent(event);
       var text = $parentLi.find('.editCommentInput').val();
-      var index = $parentLi.data('index');
+      var index = $parentLi.index();
 
       var comments = this.model.get('comments');
       var comment = comments[index];
@@ -157,7 +161,7 @@ var CardView = Backbone.View.extend({
   deleteComment: function(event) {
     event.preventDefault();
 
-    var index = this.getCommentParent(event).data('index');
+    var index = this.getCommentParent(event).index();
     var comments = this.model.get('comments');
 
     comments.splice(index, 1);

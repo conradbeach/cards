@@ -4,8 +4,8 @@ var ListsView = Backbone.View.extend({
 
   events: {
     'click .addList': 'showAddList',
-    'keypress .addListInput': 'createListOnEnter',
     'blur .addListInput': 'closeAddList',
+    'keypress .addListInput': 'createListOnEnter',
 
     'sortupdate': 'updateListPositions'
   },
@@ -32,12 +32,6 @@ var ListsView = Backbone.View.extend({
     this.$el.append(this.newListTemplate());
   },
 
-  updateListPositions: function() {
-    this.$('section').each(function(index, list) {
-      $(list).trigger('updateListPosition');
-    });
-  },
-
   showAddList: function(event) {
     event.preventDefault();
 
@@ -55,8 +49,15 @@ var ListsView = Backbone.View.extend({
 
     if (event.which === ENTER_KEY) {
       title = this.$('.addListInput').val();
+      
       app.lists.create({ title: title });
     }
+  },
+
+  updateListPositions: function() {
+    this.$('section').each(function(index, list) {
+      $(list).trigger('updateListPosition');
+    });
   }
 });
 

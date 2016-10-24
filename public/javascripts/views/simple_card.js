@@ -13,7 +13,7 @@ var SimpleCardView = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'sync', this.render);
     this.listenTo(this.model, 'destroy', this.remove);
 
     this.render();
@@ -28,8 +28,8 @@ var SimpleCardView = Backbone.View.extend({
 
     this.$('.title').addClass('hidden');
     this.$('.editTitleInput').removeClass('hidden')
-                   .focus()
-                   .val(this.model.get('title'));
+                             .val(this.model.get('title'))
+                             .focus();
   },
 
   closeEditTitle: function() {
@@ -38,9 +38,12 @@ var SimpleCardView = Backbone.View.extend({
   },
 
   saveTitleOnEnter: function(event) {
+    var title;
+
     if (event.which === ENTER_KEY) {
-      this.model.save({ title: this.$('.editTitleInput').val() });
-      this.render();
+      title = this.$('.editTitleInput').val();
+
+      this.model.save({ title: title });
     }
   },
 
